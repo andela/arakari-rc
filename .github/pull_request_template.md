@@ -1,11 +1,7 @@
-<!-- Thanks so much for your PR, your contribution is appreciated! -->
-**Are you submitting to `development`?**
-
-We currently only accept PR's to `development` not `master`
-
-- [ ] Description explains the issue / use-case resolved
-- [ ] Only contains code directly related to the issue
-- [ ] Has tests.
-- [ ] Has docs.
-- [ ] Passes all tests
-- [ ] Has been linted and follows the style guide
+ #### What does this PR do?
+ #### Description of Task to be completed?
+ #### How should this be manually tested?
+ #### Any background context you want to provide?
+ #### What are the relevant pivotal tracker stories?
+ #### Screenshots (if appropriate)
+ #### Questions:
