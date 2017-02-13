@@ -1,0 +1,23 @@
+{
+  "name": "arakari-rc",
+  "scripts": {
+  },
+  "env": {
+    "MONGO_URL": {
+      "required": true
+    },
+    "ROOT_URL": {
+      "required": true
+    }
+  },
+  "formation": {
+  },
+  "addons": [
+
+  ],
+  "buildpacks": [
+    {
+      "url": "https://github.com/swrdfish/meteor-buildpack-horse.git"
+    }
+  ]
+}
