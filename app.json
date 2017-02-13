@@ -1,0 +1,16 @@
+{
+  "name": "arakari-rc",
+  "scripts": {},
+  "env": {
+    "MONGO_URL": {
+      "required": true
+    }
+  },
+  "formation": {},
+  "addons": [],
+  "buildpacks": [
+    {
+      "url": "https://github.com/jordansissel/heroku-buildpack-meteor.git"
+    }
+  ]
+}
