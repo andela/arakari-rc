@@ -131,7 +131,6 @@ const query = new GraphQLObjectType ({
   description: "GraphQL Server Config",
   fields: () => {
     orders: {
-
     },
     products: {
       type: new GraphQLList(ProductsType),
