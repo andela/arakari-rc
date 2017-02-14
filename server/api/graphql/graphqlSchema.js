@@ -8,7 +8,7 @@ import {Accounts, Cart, Orders, Products, Shipping, Shops} from "/lib/collection
 const OrderItems = new GraphQLObjectType ({
   name: "Orders",
   description: "Details of Order Made",
-  fields: () => {
+  fields: () => ({
     title: { type: GraphQLString },
     quantity: { type: GraphQLString },
     price: {
@@ -17,13 +17,13 @@ const OrderItems = new GraphQLObjectType ({
         return obj.variants.price;
       }
     }
-  }
+  })
 });
 
 const OrderStatus = new GraphQLObjectType ({
   name: "Orders",
   description: "Order Status Details",
-  fields: () => {
+  fields: () => ({
     deliveryAddress: {
       type: ShippingAddress,
       resolve: (obj) => {
@@ -59,7 +59,7 @@ const OrderStatus = new GraphQLObjectType ({
        return obj.shipping[0].tracking;
      }
    }
-  }
+ })
 });
 
 const ProductsType = new GraphQLObjectType ({
@@ -73,19 +73,19 @@ const ShopsType = new GraphQLObjectType ({
 const ShippingAddress = new GraphQLObjectType ({
   name: "ShippingAddress",
   description: "Returns the Shipping Address",
-  fields: () => {
+  fields: () => ({
     profileName: { type: GraphQLString },
     street_address: { type: GraphQLString },
     city: { type: GraphQLString },
     region: { type: GraphQLString },
     country: { type: GraphQLString }
-  }
+  })
 });
 
 const UsersType = new GraphQLObjectType ({
   name: "Users",
   description: "A list of select user details",
-  fields: () => {
+  fields: () => ({
     id: { type: GraphQLString },
     profileName: {
       type: GraphQLString,
@@ -123,13 +123,13 @@ const UsersType = new GraphQLObjectType ({
         return obj.createdAt;
       }
     }
-  }
+  })
 });
 
 const query = new GraphQLObjectType ({
   name: "Query",
   description: "GraphQL Server Config",
-  fields: () => {
+  fields: () => ({
     orders: {
     },
     products: {
@@ -160,7 +160,7 @@ const query = new GraphQLObjectType ({
         return Accounts.find().fetch();
       }
     }
-  },
+  }),
 });
 
 const schema = new GraphQLSchema({
