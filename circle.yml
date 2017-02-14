@@ -16,7 +16,7 @@ dependencies:
 test:
   override:
     - reaction test
-    - .reaction/docker/scripts/build.sh
+    - .reaction/docker/scripts/ci-build.sh
 
 deployment:
   prequel:
