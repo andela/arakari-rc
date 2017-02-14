@@ -112,7 +112,7 @@ mobile-experience@1.0.4
 mobile-status-bar@1.0.12
 modules@0.7.6_1
 modules-runtime@0.7.6_1
-momentjs:moment@2.14.1
+momentjs:moment@2.15.1
 mongo@1.1.12_5
 mongo-id@1.0.5
 mongo-livedata@1.0.12
