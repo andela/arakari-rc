@@ -11,13 +11,13 @@ dependencies:
     - "~/.meteor"
     - "~/docker"
   override:
-    - cd $HOME/arakari-rc
+    - cd $HOME/reaction
     - .reaction/scripts/clone-packages.sh
     - .reaction/docker/scripts/plugin-loader.sh
 
 test:
   override:
-    - cd $HOME/arakari-rc
+    - cd $HOME/reaction
     - meteor npm install
     - SERVER_TEST_REPORTER="dot" meteor test --once --full-app --headless --driver-package dispatch:mocha
     - .reaction/docker/scripts/ci-build.sh
