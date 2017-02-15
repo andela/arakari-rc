@@ -1,3 +1,5 @@
+abernix:minifier-js@1.2.16
+abernix:standard-minifier-js@1.2.2
 accounts-base@1.2.12_1
 accounts-facebook@1.0.10
 accounts-google@1.0.10
@@ -149,7 +151,6 @@ shell-server@0.2.1
 spacebars@1.0.13
 spacebars-compiler@1.0.13
 srp@1.0.9
-standard-minifier-js@1.2.0_1
 templating@1.2.15
 templating-compiler@1.2.15
 templating-runtime@1.2.15
