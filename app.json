@@ -4,9 +4,6 @@
   "env": {
     "MONGODB_URI": {
       "required": true
-    },
-    "ROOT_URL": {
-      "required": true
     }
   },
   "formation": {},
