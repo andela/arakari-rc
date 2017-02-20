@@ -444,17 +444,17 @@ Meteor.methods({
     }
   },
 
-  "user/roleAccount": function(dataFromTheClient) {
-    check(dataFromTheClient, {
+  "user/addUserRole": function(accountDetails) {
+    check(accountDetails, {
       userId: String,
-      newRole: String
+      role: String
     }); 
-    Meteor.users.update(dataFromTheClient.userId, {
-      $set: { 'profile.account': dataFromTheClient.newRole }
+    Meteor.users.update(accountDetails.userId, {
+      $set: { 'profile.account': accountDetails.role }
     });
     const userRole = () => {
-      return dataFromTheClient.newRole;
+      return accountDetails.role;
     }
-    return dataFromTheClient.newRole;
+    return accountDetails.role;
   }
 });
