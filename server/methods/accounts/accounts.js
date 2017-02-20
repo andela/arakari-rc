@@ -442,5 +442,19 @@ Meteor.methods({
       Logger.error(error);
       return error;
     }
+  },
+
+  "user/roleAccount": function(dataFromTheClient) {
+    check(dataFromTheClient, {
+      userId: String,
+      newRole: String
+    }); 
+    Meteor.users.update(dataFromTheClient.userId, {
+      $set: { 'profile.account': dataFromTheClient.newRole }
+    });
+    const userRole = () => {
+      return dataFromTheClient.newRole;
+    }
+    return dataFromTheClient.newRole;
   }
 });
