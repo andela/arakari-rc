@@ -128,7 +128,6 @@ const UsersType = new GraphQLObjectType({
   name: "Users",
   description: "A list of select user details",
   fields: () => ({
-    id: { type: GraphQLString },
     fullName: {
       type: GraphQLString,
       resolve: (obj) => {

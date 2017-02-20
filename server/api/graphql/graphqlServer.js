@@ -18,7 +18,6 @@ app.get("/api/users", (request, response) => {
     {query: `
       {
         users {
-          id
           fullName
           emails
           verified
