@@ -13,35 +13,18 @@ app.use("/graphql", GraphQLHTTP({
   pretty: true
 }));
 
-app.get("/api/ordered_products/:emailID", (request, response) => {
-  const emailID = request.params.emailID.replace(/"/g, "");
+app.get("/api/users", (request, response) => {
   axios.post(`http://${request.headers.host}/graphql`,
     {query: `
       {
-        orders (emailID: "${emailID}") {
-          orderDate
-          sessionId
-          _id
+        users {
+          id
+          fullName
+          emails
+          verified
+          createdAt
+          userId
           shopId
-          email
-          workflowStatus
-          items {
-            title
-            quantity
-            price
-          }
-          shipped
-          tracking
-          deliveryAddress {
-            fullName
-            country
-            address1
-            address2
-            postal
-            city
-            region
-            phone
-          }
         }
       }`
     },
@@ -51,113 +34,7 @@ app.get("/api/ordered_products/:emailID", (request, response) => {
       }
     })
     .then((res) => {
-      if (res.data.data.orders.length) {
-        response.status(200).json(res.data);
-      }
-      response.status(404).send("No Data Found for Orders");
-    })
-    .catch((error) => {
-      response.status(400).send(error);
-    });
-});
-
-app.get("/api/processed_orders/:emailID", (request, response) => {
-  const emailID = request.params.emailID.replace(/"/g, "");
-  axios.post(`http://${request.headers.host}/graphql`,
-    {query: `
-      {
-        orders (
-          emailID: "${emailID}",
-          orderStatus: "coreOrderWorkflow/completed"
-        )
-        {
-          orderDate
-          sessionId
-          _id
-          shopId
-          email
-          workflowStatus
-          items {
-            title
-            quantity
-            price
-          }
-          shipped
-          tracking
-          deliveryAddress {
-            fullName
-            country
-            address1
-            address2
-            postal
-            city
-            region
-            phone
-          }
-        }
-      }`
-    },
-    {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-    .then((res) => {
-      if (res.data.data.orders.length) {
-        response.status(200).json(res.data);
-      }
-      response.status(404).send("No Data Found for Orders");
-    })
-    .catch((error) => {
-      response.status(400).send(error);
-    });
-});
-
-app.get("/api/cancelled_orders/:emailID", (request, response) => {
-  const emailID = request.params.emailID.replace(/"/g, "");
-  axios.post(`http://${request.headers.host}/graphql`,
-    {query: `
-      {
-        orders (emailID: "${emailID}",
-        orderStatus: "coreOrderWorkflow/canceled"
-        )
-        {
-          orderDate
-          sessionId
-          _id
-          shopId
-          email
-          workflowStatus
-          items {
-            title
-            quantity
-            price
-          }
-          shipped
-          tracking
-          deliveryAddress {
-            fullName
-            country
-            address1
-            address2
-            postal
-            city
-            region
-            phone
-          }
-        }
-      }`
-    },
-    {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-    .then((res) => {
-      if (res.data.data.orders.length) {
-        response.status(200).json(res.data);
-      }
-      response.status(404).send("No Data Found for Orders");
+      response.status(200).json(res.data);
     })
     .catch((error) => {
       response.status(400).send(error);
@@ -218,18 +95,33 @@ app.get("/api/shops", (request, response) => {
     });
 });
 
-app.get("/api/users", (request, response) => {
+app.get("/api/ordered_items/:emailID", (request, response) => {
+  const emailID = request.params.emailID.replace(/"/g, "");
   axios.post(`http://${request.headers.host}/graphql`,
     {query: `
       {
-        users {
-          id
-          fullName
-          emails
-          verified
-          createdAt
+        orders (emailID: "${emailID}") {
+          deliveryAddress {
+            fullName
+            street_address
+            city
+            region
+            country
+          }
+          email
+          _id
+          items {
+            title
+            quantity
+            price
+          }
           userId
+          workflowStatus
+          sessionId
           shopId
+          orderDate
+          shipped
+          tracking
         }
       }`
     },
@@ -239,13 +131,109 @@ app.get("/api/users", (request, response) => {
       }
     })
     .then((res) => {
-      response.status(200).json(res.data);
+      if (res.data.data.orders.length) {
+        response.status(200).json(res.data);
+      }
+      response.status(404).send("No Orders Found");
     })
     .catch((error) => {
       response.status(400).send(error);
     });
 });
 
+app.get("/api/orders_processed/:emailID", (request, response) => {
+  const emailID = request.params.emailID.replace(/"/g, "");
+  axios.post(`http://${request.headers.host}/graphql`,
+    {query: `
+      {
+        orders (emailID: "${emailID}") {
+          deliveryAddress {
+            fullName
+            street_address
+            city
+            region
+            country
+          }
+          email
+          _id
+          items {
+            title
+            quantity
+            price
+          }
+          userId
+          workflowStatus
+          sessionId
+          shopId
+          orderDate
+          shipped
+          tracking
+        }
+      }`
+    },
+    {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    .then((res) => {
+      if (res.data.data.orders.length) {
+        response.status(200).json(res.data);
+      }
+      response.status(404).send("No Orders Found");
+    })
+    .catch((error) => {
+      response.status(400).send(error);
+    });
+});
+
+app.get("/api/orders_cancelled/:emailID", (request, response) => {
+  const emailID = request.params.emailID.replace(/"/g, "");
+  axios.post(`http://${request.headers.host}/graphql`,
+    {query: `
+      {
+        orders (emailID: "${emailID}") {
+          deliveryAddress {
+            fullName
+            street_address
+            city
+            region
+            country
+          }
+          email
+          _id
+          items {
+            title
+            quantity
+            price
+          }
+          userId
+          workflowStatus
+          sessionId
+          shopId
+          orderDate
+          shipped
+          tracking
+        }
+      }`
+    },
+    {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    .then((res) => {
+      if (res.data.data.orders.length) {
+        response.status(200).json(res.data);
+      }
+      response.status(404).send("No Orders Found");
+    })
+    .catch((error) => {
+      response.status(400).send(error);
+    });
+});
+
+
 app.listen(PORT, () => {
- console.log('Node/Express server for GraphQL. listening on port', PORT);
+  console.log('Node/Express server for GraphQL. listening on port', PORT);
 });
