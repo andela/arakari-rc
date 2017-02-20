@@ -103,7 +103,7 @@ app.get("/api/ordered_items/:emailID", (request, response) => {
         orders (emailID: "${emailID}") {
           deliveryAddress {
             fullName
-            street_address
+            streetAddress
             city
             region
             country
@@ -149,7 +149,7 @@ app.get("/api/orders_processed/:emailID", (request, response) => {
         orders (emailID: "${emailID}") {
           deliveryAddress {
             fullName
-            street_address
+            streetAddress
             city
             region
             country
@@ -195,7 +195,7 @@ app.get("/api/orders_cancelled/:emailID", (request, response) => {
         orders (emailID: "${emailID}") {
           deliveryAddress {
             fullName
-            street_address
+            streetAddress
             city
             region
             country
@@ -235,5 +235,5 @@ app.get("/api/orders_cancelled/:emailID", (request, response) => {
 
 
 app.listen(PORT, () => {
-  console.log('Node/Express server for GraphQL. listening on port', PORT);
+  console.log("Node/Express server for GraphQL. listening on port", PORT);
 });

@@ -3,9 +3,9 @@ import { GraphQLSchema, GraphQLObjectType, GraphQLInt, GraphQLString,
   GraphQLList, GraphQLID } from "graphql";
 
 // Import some project data collections
-import {Accounts, Cart, Orders, Products, Shipping, Shops} from "/lib/collections";
+import {Accounts, Orders, Products, Shops} from "/lib/collections";
 
-const OrderItems = new GraphQLObjectType ({
+const OrderItems = new GraphQLObjectType({
   name: "Ordered",
   description: "Details of Order Made",
   fields: () => ({
@@ -20,7 +20,7 @@ const OrderItems = new GraphQLObjectType ({
   })
 });
 
-const OrdersType = new GraphQLObjectType ({
+const OrdersType = new GraphQLObjectType({
   name: "Orders",
   description: "Order Status Details",
   fields: () => ({
@@ -55,15 +55,15 @@ const OrdersType = new GraphQLObjectType ({
       }
     },
     tracking: {
-     type: GraphQLString,
-     resolve: (obj) => {
-       return obj.shipping[0].tracking;
-     }
-   }
- })
+      type: GraphQLString,
+      resolve: (obj) => {
+        return obj.shipping[0].tracking;
+      }
+    }
+  })
 });
 
-const ProductsType = new GraphQLObjectType ({
+const ProductsType = new GraphQLObjectType({
   name: "Products",
   description: "Lists select Product fields",
   fields: () => ({
@@ -89,42 +89,42 @@ const ProductsType = new GraphQLObjectType ({
   })
 });
 
-const ShopsType = new GraphQLObjectType ({
+const ShopsType = new GraphQLObjectType({
   name: "Shops",
-   description: "Lists present Shops",
-   fields: () => ({
-     name: { type: GraphQLString },
-     _id: { type: GraphQLID },
-     status: { type: GraphQLString },
-     currency: { type: GraphQLString },
-     emails: {
-       type: GraphQLString,
-       resolve: (obj) => {
-         return obj.emails[0].address;
-       }
-     },
-     lastUpdated: {
-       type: GraphQLString,
-       resolve: (obj) => {
-         return obj.updatedAt;
-       }
-     }
-   })
+  description: "Lists present Shops",
+  fields: () => ({
+    name: { type: GraphQLString },
+    _id: { type: GraphQLID },
+    status: { type: GraphQLString },
+    currency: { type: GraphQLString },
+    emails: {
+      type: GraphQLString,
+      resolve: (obj) => {
+        return obj.emails[0].address;
+      }
+    },
+    lastUpdated: {
+      type: GraphQLString,
+      resolve: (obj) => {
+        return obj.updatedAt;
+      }
+    }
+  })
 });
 
-const ShippingAddress = new GraphQLObjectType ({
+const ShippingAddress = new GraphQLObjectType({
   name: "ShippingAddress",
   description: "Returns the Shipping Address",
   fields: () => ({
     fullName: { type: GraphQLString },
-    street_address: { type: GraphQLString },
+    streetAddress: { type: GraphQLString },
     city: { type: GraphQLString },
     region: { type: GraphQLString },
     country: { type: GraphQLString }
   })
 });
 
-const UsersType = new GraphQLObjectType ({
+const UsersType = new GraphQLObjectType({
   name: "Users",
   description: "A list of select user details",
   fields: () => ({
@@ -155,7 +155,7 @@ const UsersType = new GraphQLObjectType ({
         if (obj.emails.length) {
           return obj.emails[0].verified;
         } else {
-          return;
+          return null;
         }
       }
     },
@@ -170,7 +170,7 @@ const UsersType = new GraphQLObjectType ({
   })
 });
 
-const query = new GraphQLObjectType ({
+const query = new GraphQLObjectType({
   name: "Query",
   description: "GraphQL Server Config",
   fields: () => ({
@@ -217,11 +217,11 @@ const query = new GraphQLObjectType ({
         return Accounts.find().fetch();
       }
     }
-  }),
+  })
 });
 
 const schema = new GraphQLSchema({
- query
+  query
 });
 
 export default schema;
