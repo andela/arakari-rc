@@ -70,12 +70,12 @@ Template.loginFormSignUpView.events({
       role: role
     };
 
-    var dataForServer = {
+    var accountDetails = {
         userId: Meteor.userId(),
         newRole: role
     };
 
-    Meteor.call('user/roleAccount', dataForServer, (err, res) => {
+    Meteor.call('user/addUserRole', accountDetails, (err, res) => {
       if (err) {
         alert(err);
       } else {
