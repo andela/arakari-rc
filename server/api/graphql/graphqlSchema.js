@@ -70,12 +70,7 @@ const ProductsType = new GraphQLObjectType({
     title: { type: GraphQLString },
     _id: { type: GraphQLString },
     vendor: { type: GraphQLString },
-    createdAt: {
-      type: GraphQLString,
-      resolve: (obj) => {
-        return obj.createdAt;
-      }
-    },
+    createdAt: { type: GraphQLString },
     price: {
       type: GraphQLString,
       resolve: (obj) => {
@@ -158,12 +153,7 @@ const UsersType = new GraphQLObjectType({
         }
       }
     },
-    createdAt: {
-      type: GraphQLString,
-      resolve: (obj) => {
-        return obj.createdAt;
-      }
-    },
+    createdAt: { type: GraphQLString },
     userId: { type: GraphQLString },
     shopId: { type: GraphQLString }
   })
