@@ -1,9 +1,12 @@
 import faker from "faker";
 import { Shops } from "/lib/collections";
+import { Meteor } from "meteor/meteor";
 
 export function getShop() {
   createShopFactory();
-  const existingShop = Shops.findOne();
+  const vendorId = Meteor.userId();
+  const existingShop = Shops.findOne({vendorId: vendorId});
+  console.log(existingShop);
   return existingShop || Factory.create("shop");
 }
 
