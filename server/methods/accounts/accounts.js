@@ -2,7 +2,6 @@ import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
 
-
 /**
  * Reaction Account Methods
  */
@@ -452,9 +451,6 @@ Meteor.methods({
     Meteor.users.update(accountDetails.userId, {
       $set: { 'profile.account': accountDetails.role }
     });
-    const userRole = () => {
-      return accountDetails.role;
-    }
     return accountDetails.role;
   }
 });
