@@ -6,7 +6,6 @@ export function getShop() {
   createShopFactory();
   const vendorId = Meteor.userId();
   const existingShop = Shops.findOne({vendorId: vendorId});
-  console.log(existingShop);
   return existingShop || Factory.create("shop");
 }
 
