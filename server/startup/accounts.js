@@ -116,7 +116,6 @@ export default function () {
           roles[shopId] = shop.defaultRoles || defaultRoles;
         }
 
-        const currentUser = user;
         // also add services with email defined to user.emails[]
         for (const service in user.services) {
           if (user.services[service].email) {

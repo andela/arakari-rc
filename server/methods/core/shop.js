@@ -57,6 +57,54 @@ Meteor.methods({
   },
 
   /**
+   * shop/createVendorShop
+   * @param {String} shopAdminUserId - optionally create shop for provided userId
+   * @param {Object} shopData - optionally provide shop object to customize
+   * @return {String} return shopId
+   */
+  "shop/createVendorShop": function (shopAdminUserId, shopData) {
+    check(shopAdminUserId, Match.Optional(String));
+    check(shopData, Match.Optional(Schemas.Shop));
+    let shop = {};
+    // must have owner access to create new shops
+    if (!Reaction.hasOwnerAccess()) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
+    // this.unblock();
+    const count = Collections.Shops.find().count() || "";
+    const currentUser = Meteor.userId();
+    // we'll accept a shop object, or clone the current shop
+    // shop = shopData || Collections.Shops.findOne(Reaction.getShopId());
+    // if we don't have any shop data, use fixture
+
+    // check(shop, Schemas.Shop);
+    if (!currentUser) {
+      throw new Meteor.Error("Unable to create shop with specified user");
+    }
+
+    // identify a shop admin
+    const userId = shopAdminUserId || Meteor.userId();
+    const adminRoles = Roles.getRolesForUser(currentUser, Reaction.getShopId());
+    // ensure unique id and shop name
+    shop._id = Random.id();
+    shop.name = '<Insert Shop Name>';
+    shop.vendorId = shopAdminUserId;
+
+    // check(shop, Schemas.Shop);
+
+    Collections.Shops.insert(shop);
+
+    // we should have created new shop, or errored
+    Logger.info("Created shop: ", shop._id);
+    Roles.addUsersToRoles([currentUser, userId], adminRoles, shop._id);
+    Meteor.users.update(shopAdminUserId, {
+      $set: { 'profile.shopId': shop._id }
+    });
+    return shop._id;
+  },
+
+  /**
    * shop/getLocale
    * @summary determine user's countryCode and return locale object
    * determine local currency and conversion rate from shop currency
