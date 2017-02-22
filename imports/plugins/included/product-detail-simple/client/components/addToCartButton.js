@@ -25,6 +25,7 @@ class AddToCartButton extends Component {
           className="input-group-addon add-to-cart-text js-add-to-cart"
           data-i18n="productDetail.addToCart"
           onClick={this.props.onClick}
+          id="add-to-cart"
         >
           <Translation defaultValue="Add to cart" i18nKey="productDetail.addToCart" />
         </button>
