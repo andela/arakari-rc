@@ -1,5 +1,6 @@
 import { LoginFormSharedHelpers } from "/client/modules/accounts/helpers";
 import { Template } from "meteor/templating";
+import * as Collections from "/lib/collections";
 
 /**
  * onCreated: Login form sign up view
@@ -70,9 +71,9 @@ Template.loginFormSignUpView.events({
       role: role
     };
 
-    var accountDetails = {
+    const accountDetails = {
         userId: Meteor.userId(),
-        newRole: role
+        role: role
     };
 
     Meteor.call('user/addUserRole', accountDetails, (err, res) => {
@@ -91,6 +92,17 @@ Template.loginFormSignUpView.events({
         });
       } else {
         // Close dropdown or navigate to page
+        const userId = Meteor.userId();
+  
+        if (role === "vendor") {
+          Meteor.call("shop/createVendorShop", userId,(err, res) => {
+          if (err) {
+            alert(err);
+          } else {
+            // success!
+          }
+        });
+        }
       }
     });
   }
