@@ -46,6 +46,14 @@ Template.registerHelper("displayName", function (displayUser) {
 });
 
 /**
+ * registerHelper currentUser
+ */
+Template.loginDropdown.helpers({
+  currentUser: function() {
+    return Meteor.user();
+  }
+})
+/**
  * registerHelper fName
  */
 
