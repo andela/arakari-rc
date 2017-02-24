@@ -34,11 +34,10 @@ Template.loginFormSignUpView.events({
     // var usernameInput = template.$(".login-input--username");
     const emailInput = template.$(".login-input-email");
     const passwordInput = template.$(".login-input-password");
-    const roleInput = template.$(".login-input-role");
 
     const email = emailInput.val().trim();
     const password = passwordInput.val().trim();
-    const role = roleInput.val().trim();
+    const role = event.target.myAccount.value;
 
     const validatedEmail = LoginFormValidation.email(email);
     const validatedPassword = LoginFormValidation.password(password);
