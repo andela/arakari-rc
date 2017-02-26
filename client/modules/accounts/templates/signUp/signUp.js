@@ -1,6 +1,5 @@
 import { LoginFormSharedHelpers } from "/client/modules/accounts/helpers";
 import { Template } from "meteor/templating";
-import * as Collections from "/lib/collections";
 
 /**
  * onCreated: Login form sign up view
