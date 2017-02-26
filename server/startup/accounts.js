@@ -110,6 +110,7 @@ export default function () {
 
         user.profile.account = current_user.profile.account
 
+        // checks if user is a vendor and assigns the correct roles to user
         if (user.profile.account === 'vendor') {
           roles[shopId] = shop.vendorRoles || vendorRoles;
         } else {
