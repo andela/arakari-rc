@@ -221,20 +221,12 @@ Meteor.methods({
    */
   "orders/cancelOrder"(order) {
     check(order, Object);
-    // check(newComment, Object);
-
-    // if (!Reaction.hasPermission("orders")) {
-    //   throw new Meteor.Error(403, "Access Denied");
-    // }
 
     // Update Order
     return Orders.update(order._id, {
       $set: {
         "workflow.status": "canceled"
       },
-      // $push: {
-      //   // comments: newComment
-      // },
       $addToSet: {
         "workflow.workflow": "coreOrderWorkflow/canceled"
       }
