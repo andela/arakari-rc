@@ -69,7 +69,7 @@ Template.loginFormSignUpView.events({
     };
 
     const accountDetails = {
-        userId: Meteor.userId(),
+        userId: this.userId(),
         role: role
     };
 
