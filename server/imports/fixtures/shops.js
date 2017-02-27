@@ -8,6 +8,11 @@ export function getShop() {
   return existingShop || Factory.create("shop");
 }
 
+export function createShops() {
+  createShopFactory();
+  return Factory.create("shop");
+}
+
 export function getAddress(options = {}) {
   const defaults = {
     fullName: faker.name.findName(),

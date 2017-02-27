@@ -5,6 +5,7 @@ import { Job } from "meteor/vsivsi:job-collection";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { GeoCoder, Logger, Reaction } from "/server/api";
+import { createShops } from "/server/imports/fixtures/shops";
 
 /**
  * Reaction Shop Methods
@@ -65,7 +66,6 @@ Meteor.methods({
   "shop/createVendorShop": function (shopAdminUserId, shopData) {
     check(shopAdminUserId, Match.Optional(String));
     check(shopData, Match.Optional(Schemas.Shop));
-    let shop = {};
     // must have owner access to create new shops
     if (!Reaction.hasOwnerAccess()) {
       throw new Meteor.Error(403, "Access Denied");
@@ -87,6 +87,9 @@ Meteor.methods({
     const userId = shopAdminUserId || Meteor.userId();
     const adminRoles = Roles.getRolesForUser(currentUser, Reaction.getShopId());
     // ensure unique id and shop name
+
+    const shop = createShops();
+
     shop._id = Random.id();
     shop.name = '<Insert Shop Name>';
     shop.vendorId = shopAdminUserId;
@@ -155,6 +158,7 @@ Meteor.methods({
 
     // get currency rates
     result.currency = {};
+    console.log(shop)
     result.locale = shop.locales.countries[countryCode];
 
     // to return default currency if rates will failed, we need to bring access
