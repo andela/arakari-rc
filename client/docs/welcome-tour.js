@@ -37,6 +37,6 @@ tour.start();
 
 welcome = {
   start: function () {
-    wel.restart();
+    tour.restart();
   }
 };
