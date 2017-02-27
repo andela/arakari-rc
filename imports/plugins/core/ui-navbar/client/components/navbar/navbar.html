@@ -6,8 +6,11 @@
     <div class="menu">
       {{> tagNav tagNavProps}}
     </div>
+    <div onclick="welcome.start()">
+      <i class="help fa fa-car fa-2x"></i>
+    </div>
       {{#if hasDashboardAccess}}
-    <div class="help" > <a href="javascript:void()" data-toggle='modal' data-target='#howVideo'><i class="fa fa-question fa-2x"></i></a> </div>
+    <div class="help"> <a href="javascript:void()" data-toggle='modal' data-target='#howVideo'><i class="fa fa-question fa-2x"></i></a> </div>
        {{/if}}
     <div class="search" id="nav_search">{{> React IconButtonComponent}}</div>
     <div class="languages hidden-xs" id="lang">{{> i18nChooser}}</div>
