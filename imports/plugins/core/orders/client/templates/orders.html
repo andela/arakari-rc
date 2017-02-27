@@ -55,6 +55,14 @@
       <div class="order-panel-items">
         {{> ordersListItems order=order currencyFormat=currencyFormat}}
       </div>
+      {{#if isCanceled order }}
+ +      <div style="text-align:center;" >
+ +        Reason for Cancelled Order:
+ +        <span class="badge badge-danger">
+ +         {{ canceledReason order }}
+ +        </span>
+ +      </div>
+ +      {{/if}}
     </div>
 
     <div class="controls">
@@ -72,7 +80,7 @@
   <div class="col-xs-8">
     <div data-i18n="orderDetail.created">Created {{orderAge}} {{dateFormat createdAt format="MMM D, YYYY hh:mm:ss A"}}</div>
     <p>
-      Tracking: <a href="#">{{shipmentTracking}}</a> - 
+      Tracking: <a href="#">{{shipmentTracking}}</a> -
       <span class="badge badge-{{shipmentStatus.status}}">{{shipmentStatus.label}}</span>
     </p>
   </div>
