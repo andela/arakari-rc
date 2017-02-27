@@ -14,23 +14,26 @@ const tour = new Tour({
     {
       element: "#lang",
       title: "Language",
-      content: "Change the storefront language by clicking here and selecting language from the dropdown menu."
+      content: "Change the storefront language by clicking here and selecting language from the dropdown menu.",
+      placement: "left"
     },
     {
       element: "#acc",
       title: "Accounts",
-      content: "Sign In and access your profile and account details by clicking here."
+      content: "Sign In and access your profile and account details by clicking here.",
+      placement: "bottom"
     },
     {
       element: "#shopping-cart",
       title: "Shopping Cart",
-      content: "Access and checkout items in your shopping cart here."
+      content: "Access and checkout items in your shopping cart here.",
+      placement: "left"
     }
   ]
 });
 
 // Initialize the tour
-tour.init();
+// tour.init();
 
 // Start the tour
 tour.start();
@@ -38,5 +41,8 @@ tour.start();
 welcome = {
   start: function () {
     tour.restart();
+  },
+  init: function () {
+    tour.init();
   }
 };
