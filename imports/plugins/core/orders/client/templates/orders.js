@@ -168,13 +168,7 @@ Template.ordersListItem.helpers({
     return order.workflow.status === "new";
   },
   isCanceled(order) {
-    if (order.workflow.status === "canceled") {
-      return true;
-    }
-    return false;
-  },
-  canceledReason(order) {
-    return order.comments[0].body;
+    return (order.workflow.status === "canceled");
   }
 });
 
