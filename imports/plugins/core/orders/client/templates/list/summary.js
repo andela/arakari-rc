@@ -38,10 +38,7 @@ Template.ordersListSummary.helpers({
   },
 
   orderStatus() {
-    if (this.order.workflow.status === "canceled") {
-      return true;
-    }
-    return false;
+    return this.order.workflow.status === "canceled";
   }
 });
 
