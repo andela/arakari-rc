@@ -33,7 +33,7 @@ const tour = new Tour({
 });
 
 // Initialize the tour
-// tour.init();
+tour.init();
 
 // Start the tour
 tour.start();
@@ -41,8 +41,5 @@ tour.start();
 welcome = {
   start: function () {
     tour.restart();
-  },
-  init: function () {
-    tour.init();
   }
 };
