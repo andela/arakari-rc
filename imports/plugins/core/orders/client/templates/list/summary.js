@@ -32,6 +32,11 @@ Template.ordersListSummary.helpers({
     };
   },
 
+  displayCancelButton() {
+    return !(this.order.workflow.status === "canceled"
+     || this.order.workflow.status === "coreOrderWorkflow/canceled");
+  },
+
   orderStatus() {
     if (this.order.workflow.status === "canceled") {
       return true;
