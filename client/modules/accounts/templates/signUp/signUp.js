@@ -27,7 +27,7 @@ Template.loginFormSignUpView.events({
    * @param  {Template} template - Blaze Template
    * @return {void}
    */
-  "submit form": function (event, template) {
+  "submit form": function(event, template) {
     event.preventDefault();
 
     // var usernameInput = template.$(".login-input--username");
@@ -69,8 +69,8 @@ Template.loginFormSignUpView.events({
     };
 
     const accountDetails = {
-        userId: Meteor.userId(),
-        role: role
+      userId: Meteor.userId(),
+      role: role
     };
 
     // adds role to user account
@@ -82,7 +82,7 @@ Template.loginFormSignUpView.events({
       }
     });
 
-    Accounts.createUser(newUserData, function (error) {
+    Accounts.createUser(newUserData, function(error) {
       if (error) {
         // Show some error message
         templateInstance.formMessages.set({
@@ -91,10 +91,16 @@ Template.loginFormSignUpView.events({
       } else {
         // Close dropdown or navigate to page
         const userId = Meteor.userId();
-  
+
         if (role === "vendor") {
-        // creates a new shop when a vendor user signs up
-    
+          // creates a new shop when a vendor user signs up
+          Meteor.call('shop/createVendorShop', userId, (err, res) => {
+            if (err) {
+              alert(err);
+            } else {
+              // success!
+            }
+          });
         }
       }
     });
