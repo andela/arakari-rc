@@ -27,7 +27,7 @@ Template.loginFormSignUpView.events({
    * @param  {Template} template - Blaze Template
    * @return {void}
    */
-  "submit form": function(event, template) {
+  "submit form": function (event, template) {
     event.preventDefault();
 
     // var usernameInput = template.$(".login-input--username");
