@@ -452,12 +452,11 @@ Meteor.methods({
     check(accountDetails, {
       userId: String,
       role: String
-    }); 
+    });
     // assigns user role to profile.account
     Meteor.users.update(accountDetails.userId, {
       $set: { 'profile.account': accountDetails.role }
     });
-    console.log(accountDetails.role);
     return accountDetails.role;
   }
 });
