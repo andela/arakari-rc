@@ -37,7 +37,7 @@ Template.ordersListSummary.helpers({
      || this.order.workflow.status === "coreOrderWorkflow/canceled");
   },
 
-  orderStatus() {
+  orderCanceled() {
     return this.order.workflow.status === "canceled";
   }
 });
