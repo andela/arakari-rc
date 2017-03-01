@@ -62,12 +62,6 @@ Template.loginFormSignUpView.events({
       return;
     }
 
-    const newUserData = {
-      email: email,
-      password: password,
-      role: role
-    };
-
     const accountDetails = {
       userId: Meteor.userId(),
       role: role
@@ -82,6 +76,12 @@ Template.loginFormSignUpView.events({
       }
     });
 
+    const newUserData = {
+      email: email,
+      password: password,
+      role: role
+    };
+
     Accounts.createUser(newUserData, function(error) {
       if (error) {
         // Show some error message
@@ -90,6 +90,18 @@ Template.loginFormSignUpView.events({
         });
       } else {
         // Close dropdown or navigate to page
+        const userId = Meteor.userId();
+
+        if (role === "vendor") {
+          // creates a new shop when a vendor user signs up
+          Meteor.call('shop/createVendorShop', userId, (err, res) => {
+            if (err) {
+              alert(err);
+            } else {
+              // success!
+            }
+          });
+        }
       }
     });
   }
