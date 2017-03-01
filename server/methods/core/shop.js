@@ -5,6 +5,7 @@ import { Job } from "meteor/vsivsi:job-collection";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { GeoCoder, Logger, Reaction } from "/server/api";
+import { createShops } from "/server/imports/fixtures/shops";
 
 /**
  * Reaction Shop Methods
@@ -53,6 +54,46 @@ Meteor.methods({
     // we should have created new shop, or errored
     Logger.info("Created shop: ", shop._id);
     Roles.addUsersToRoles([currentUser, userId], adminRoles, shop._id);
+    return shop._id;
+  },
+
+  /**
+   * shop/createVendorShop
+   * @param {String} shopAdminUserId - optionally create shop for provided userId
+   * @param {Object} shopData - optionally provide shop object to customize
+   * @return {String} return shopId
+   */
+  "shop/createVendorShop": function(shopVendorUserId) {
+    check(shopVendorUserId, Match.Optional(String));
+    // must have owner access to create new shops
+    if (!Reaction.hasOwnerAccess()) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
+    const currentUser = Meteor.userId();
+ 
+    if (!currentUser) {
+      throw new Meteor.Error("Unable to create shop with specified user");
+    }
+
+    // identify a shop admin
+    const userId = shopVendorUserId || Meteor.userId();
+    const adminRoles = Roles.getRolesForUser(currentUser, Reaction.getShopId());
+
+    const shop = createShops();
+
+    shop._id = Random.id();
+    shop.name = 'Shop Name';
+    shop.vendorId = shopVendorUserId;
+
+    Collections.Shops.insert(shop);
+
+    // we should have created new shop, or errored
+    Logger.info("Created shop: ", shop._id);
+    Roles.addUsersToRoles([currentUser, userId], adminRoles, shop._id);
+    Meteor.users.update(shopVendorUserId, {
+      $set: { 'profile.shopId': shop._id }
+    });
     return shop._id;
   },
 
@@ -669,12 +710,13 @@ Meteor.methods({
       }
     });
   },
+  
   /*
-  * shop/changeLayout
-  * @summary Change the layout for all workflows so you can use a custom one
-  * @param {String} shopId - the shop's ID
-  * @param {String} layout - new layout to use
-  * @return {Number} mongo update result
+   * shop/changeLayout
+   * @summary Change the layout for all workflows so you can use a custom one
+   * @param {String} shopId - the shop's ID
+   * @param {String} layout - new layout to use
+   * @return {Number} mongo update result
    */
   "shop/changeLayouts": function (shopId, newLayout) {
     check(shopId, String);
