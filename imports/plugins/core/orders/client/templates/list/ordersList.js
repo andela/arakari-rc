@@ -1,7 +1,6 @@
 import moment from "moment";
 import { Template } from "meteor/templating";
 import { Orders, Shops } from "/lib/collections";
-import { i18next } from "/client/api";
 
 /**
  * dashboardOrdersList helpers
@@ -10,11 +9,11 @@ import { i18next } from "/client/api";
 Template.dashboardOrdersList.helpers({
   orderStatus() {
     if (this.workflow.status === "coreOrderWorkflow/completed") {
-      return i18next.t("order.completed");
+      return "Completed";
     } else if (this.workflow.status === "canceled") {
-      return i18next.t("order.canceled");
+      return "Canceled";
     }
-    return i18next.t("order.processing");
+    return "Processing";
   },
   orders(data) {
     if (data.hash.data) {
