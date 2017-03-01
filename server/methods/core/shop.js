@@ -83,7 +83,7 @@ Meteor.methods({
     const shop = createShops();
 
     shop._id = Random.id();
-    shop.name = '<Insert Shop Name>';
+    shop.name = 'Shop Name';
     shop.vendorId = shopVendorUserId;
 
     Collections.Shops.insert(shop);
