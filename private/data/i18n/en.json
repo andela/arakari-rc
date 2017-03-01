@@ -437,7 +437,6 @@
         "status": "Status",
         "completed": "Completed",
         "processing": "Processing",
-        "canceled": "Canceled",
         "destination": "Destination",
         "shipment": "Shipment",
         "payment": "Payment",
