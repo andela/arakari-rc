@@ -6,11 +6,41 @@
     <div class="menu">
       {{> tagNav tagNavProps}}
     </div>
-    
-    <div class="search">{{> React IconButtonComponent}}</div>
-    <div class="languages hidden-xs">{{> i18nChooser}}</div>
-    <div class="accounts">{{> accounts tpl="loginDropdown"}}</div>
-    <div class="cart">{{> cartIcon}}</div>
+    <div class="tooltip" onclick="welcome.start()">
+      <i class="help fa fa-car"></i>
+      <span class="tooltiptext">Click to start the tour.</span>
+    </div>
+ 
+      {{#if hasDashboardAccess}}
+    <div class=" tooltip help"> <a href="javascript:void()" data-toggle='modal' data-target='#howVideo'><i class="fa fa-question fa-2x"></i></a>
+    <span class="tooltiptext">Click to watch onboarding video.</span>
+     </div>
+       {{/if}}
+    <div class="search" id="nav_search">{{> React IconButtonComponent}}</div>
+    <div class="languages hidden-xs" id="lang">{{> i18nChooser}}</div>
+    <div class="accounts" id="acc">{{> accounts tpl="loginDropdown"}}</div>
+    <div class="cart" id="shopping-cart">{{> cartIcon}}</div>
     <div class="cart-alert">{{> cartPanel}}</div>
+  </div>
+  <div class="modal fade" id="howVideo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h3><i class="fa fa-info-circle"></i> Getting Started </h3>
+        </div>
+        <div class="modal-body">
+          <p class="alert alert-success">
+          <iframe width="100%" height="315" src="https://www.youtube.com/embed/g_FwpbQnAZk" frameborder="0" allowfullscreen></iframe>
+          </p>
+
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-remove"></i> Close</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
