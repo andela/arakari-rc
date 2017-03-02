@@ -340,7 +340,6 @@ Meteor.methods({
         items: items
       }
     });
-
     return result;
   }
 });
