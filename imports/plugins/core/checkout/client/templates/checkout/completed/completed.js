@@ -28,7 +28,9 @@ Template.cartCompleted.helpers({
   },
   orderStatus: function () {
     if (this.workflow.status === "new") {
-      return i18next.t("cartCompleted.submitted");
+      return "submitted";
+    } else if (this.workflow.status === "canceled") {
+      return "Canceled";
     }
     return this.workflow.status;
   },
