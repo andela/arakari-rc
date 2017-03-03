@@ -13,6 +13,9 @@ const orderFilters = [{
 }, {
   name: "completed",
   label: "Completed"
+}, {
+  name: "canceled",
+  label: "Canceled"
 }];
 
 const OrderHelper =  {
@@ -163,6 +166,9 @@ Template.ordersListItem.helpers({
 
   orderIsNew(order) {
     return order.workflow.status === "new";
+  },
+  isCanceled(order) {
+    return (order.workflow.status === "canceled");
   }
 });
 
@@ -301,6 +307,9 @@ Template.orderStatusDetail.helpers({
       return this.shipping[0].tracking;
     }
     return i18next.t("orderShipping.noTracking");
+  },
+  orderStatus: function () {
+    return this.workflow.status;
   },
 
   shipmentStatus() {
