@@ -211,6 +211,30 @@ Meteor.methods({
       }
     });
   },
+
+  /**
+   * orders/cancelOrder
+   *
+   * @summary Cancel an Order
+   * @param {Object} order - order object
+   * @param {Object} newComment - new comment object
+   * @return {Object} return updated result
+   */
+  "orders/cancelOrder"(order) {
+    check(order, Object);
+
+    // Update Order
+    return Orders.update(order._id, {
+      $set: {
+        "workflow.status": "canceled"
+      },
+      $addToSet: {
+        "workflow.workflow": "coreOrderWorkflow/canceled"
+      }
+    });
+  },
+
+  /**
   /**
    * orders/shipmentShipped
    *

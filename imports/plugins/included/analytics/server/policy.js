@@ -8,3 +8,5 @@ BrowserPolicy.content.allowOriginForAll("*.facebook.com");
 BrowserPolicy.content.allowOriginForAll("connect.facebook.net");
 BrowserPolicy.content.allowOriginForAll("fonts.googleapis.com");
 BrowserPolicy.content.allowOriginForAll("fonts.gstatic.com");
+BrowserPolicy.content.allowFrameOrigin( 'www.youtube.com' );
+BrowserPolicy.framing.restrictToOrigin( 'localhost:3000' );

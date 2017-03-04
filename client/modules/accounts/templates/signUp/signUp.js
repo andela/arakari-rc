@@ -36,6 +36,7 @@ Template.loginFormSignUpView.events({
 
     const email = emailInput.val().trim();
     const password = passwordInput.val().trim();
+    const role = event.target.myAccount.value;
 
     const validatedEmail = LoginFormValidation.email(email);
     const validatedPassword = LoginFormValidation.password(password);
@@ -61,13 +62,27 @@ Template.loginFormSignUpView.events({
       return;
     }
 
-    const newUserData = {
-      // username: username,
-      email: email,
-      password: password
+    const accountDetails = {
+      userId: Meteor.userId(),
+      role: role
     };
 
-    Accounts.createUser(newUserData, function (error) {
+    // adds role to user account
+    Meteor.call('user/addUserRole', accountDetails, (err, res) => {
+      if (err) {
+        alert(err);
+      } else {
+        // success!
+      }
+    });
+
+    const newUserData = {
+      email: email,
+      password: password,
+      role: role
+    };
+
+    Accounts.createUser(newUserData, function(error) {
       if (error) {
         // Show some error message
         templateInstance.formMessages.set({

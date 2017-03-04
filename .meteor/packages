@@ -94,3 +94,5 @@ practicalmeteor:sinon
 
 
 # Custom Packages
+flowkey:bootstrap-tour
+jquery

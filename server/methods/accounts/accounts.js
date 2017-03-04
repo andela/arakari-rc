@@ -2,7 +2,6 @@ import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
 
-
 /**
  * Reaction Account Methods
  */
@@ -442,5 +441,22 @@ Meteor.methods({
       Logger.error(error);
       return error;
     }
+  },
+
+  /**
+   * user/addUserRole
+   * @param {Object} accountDetails - userId and role
+   * @returns {String} returns user account role
+   */
+  "user/addUserRole": function(accountDetails) {
+    check(accountDetails, {
+      userId: String,
+      role: String
+    });
+    // assigns user role to profile.account
+    Meteor.users.update(accountDetails.userId, {
+      $set: { 'profile.account': accountDetails.role }
+    });
+    return accountDetails.role;
   }
 });

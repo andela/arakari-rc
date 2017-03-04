@@ -82,6 +82,7 @@ export default function () {
     const shopId = shop._id;
     const defaultVisitorRole =  ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"];
     const defaultRoles =  ["guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"];
+    const vendorRoles = ["owner"];
     const roles = {};
     const additionals = {
       profile: Object.assign({}, options && options.profile)
@@ -105,7 +106,17 @@ export default function () {
       if (!user.services) {
         roles[shopId] = shop.defaultVisitorRole || defaultVisitorRole;
       } else {
-        roles[shopId] = shop.defaultRoles || defaultRoles;
+        const current_user = Meteor.user(user);
+
+        user.profile.account = current_user.profile.account
+
+        // checks if user is a vendor and assigns the correct roles to user
+        if (user.profile.account === 'vendor') {
+          roles[shopId] = shop.vendorRoles || vendorRoles;
+        } else {
+          roles[shopId] = shop.defaultRoles || defaultRoles;
+        }
+
         // also add services with email defined to user.emails[]
         for (const service in user.services) {
           if (user.services[service].email) {

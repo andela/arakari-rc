@@ -232,3 +232,44 @@
 .rui.navbar .search:hover button {
   outline: none;
 }
+.rui.navbar .help {
+  .display(flex);
+  .align-items(center);
+  .flex(0 0 auto);
+  height: @navbar-height;
+  padding: 0px @navbar-padding-vertical;
+  cursor: pointer;
+}
+
+.rui.navbar .help:hover {
+  background-color: @navbar-default-toggle-icon-bar-bg;
+  border-color: @navbar-default-toggle-border-color;
+}
+
+.rui.navbar .help:hover button {
+  outline: none;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: green;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
