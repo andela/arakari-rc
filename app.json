@@ -25,11 +25,14 @@
     },
     "PAPERTRAIL_API_TOKEN": {
       "required": true
+    },
+    "SMS": {
+      "required": true
     }
   },
   "formation": {},
   "addons": [
-
+    "sendgrid"
   ],
   "buildpacks": [{
     "url": "https://github.com/swrdfish/meteor-buildpack-horse.git"
