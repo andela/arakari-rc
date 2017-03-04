@@ -6,9 +6,10 @@ import Future from "fibers/future";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { getSlug } from "/lib/api";
-import { Cart, Media, Orders, Products, Shops } from "/lib/collections";
+import { Cart, Media, Orders, Products, Shops, Notifications } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
+import { HTTP } from "meteor/http";
 
 /**
  * Reaction Order Methods
@@ -316,6 +317,40 @@ Meteor.methods({
   },
 
   /**
+   * notifications/retrieveNotifications
+   *
+   * @summary retrieve user notifications
+   * @param {String} currentUserId - current user Id
+   * @return {Boolean} the notification object or null
+   */
+  "notifications/retrieveNotifications": function (currentUserId) {
+    try {
+      check(currentUserId, String);
+      const notification = Notifications.find({userId: currentUserId}).fetch();
+      return notification ? notification : [false];
+    } catch (e) {
+      return false;
+    }
+  },
+
+  /**
+   * notifications/clearNotifications
+   *
+   * @summary clear notifications
+   * @param {String} currentUserId - current user Id
+   */
+  "notifications/clearNotifications": function (currentUserId) {
+    try {
+      check(currentUserId, String);
+      const selector = {
+        userId: currentUserId
+      };
+      Notifications.remove(selector);
+    } catch (e) {
+    }
+  },
+
+  /**
    * orders/sendNotification
    *
    * @summary send order notification email
@@ -332,9 +367,92 @@ Meteor.methods({
 
     this.unblock();
 
-    // Get Shop information
+    const notifications = {
+      userId: Meteor.userId(),
+      name: "Order Processing",
+      type: "new",
+      message: "🛒 Your order just joined the processing queue!",
+      orderId: order._id
+    };
+
+    if (order.workflow.status === "coreOrderItemWorkflow/shipped") {
+      notifications.name = "Order Shipped";
+      notifications.type = "shipped";
+      notifications.message = "🚢 Your order is on the way!";
+    }
+
+    if (order.workflow.status === "coreOrderWorkflow/completed") {
+      notifications.name = "Order Completed";
+      notifications.type = "completed";
+      notifications.message = "🙌 Your order has been delivered!";
+    }
+
+    if (order.workflow.status === "canceled") {
+      notifications.name = "Order Canceled";
+      notifications.type = "canceled";
+      notifications.message = "❌ Your order has been cancelled!";
+    }
+
+
+    check(notifications, Schemas.Notifications);
+    Notifications.insert(notifications);
+
+    let locale;
+    Meteor.call("shop/getLocale", (err, res) => {
+      locale = res.countryCode || 254;
+    });
+
+    const customerNumber = `+${locale}${order.billing[0].address.phone}`;
+
     const shop = Shops.findOne(order.shopId);
     const shopContact = shop.addressBook[0];
+
+    const orderedItems = order.items.length;
+    let orderedProducts;
+    for (let i = 0; i < orderedItems; i += 1) {
+      orderedProducts += ` ${order.items[i].title},`;
+    }
+
+    const customerNotifyAlert = {
+      to: customerNumber,
+      message: `We have received your order for ${orderedProducts} we are currently processing it. 🛒 Keep it Arakari! 😊`
+    };
+    if (order.workflow.status === "new") {
+      Meteor.call("sms/notif/alert", customerNotifyAlert, (error, result) => {
+        if (error) {
+          Logger.warn("ERROR", error);
+        } else {
+          Logger.info("SMS SENT", result);
+        }
+      });
+    } else if (order.workflow.status === "coreOrderItemWorkflow/shipped") {
+      customerNotifyAlert.message = "Your order is on the way! 🚢 Keep it Arakari! 😊";
+      Meteor.call("sms/notif/alert", customerNotifyAlert, (error, result) => {
+        if (error) {
+          Logger.warn("ERROR", error);
+        } else {
+          Logger.info("SMS SENT", result);
+        }
+      });
+    } else if (order.workflow.status === "coreOrderWorkflow/completed") {
+      customerNotifyAlert.message = "Your order has been delivered! 🙌 Keep it Arakari! 😊";
+      Meteor.call("sms/notif/alert", customerNotifyAlert, (error, result) => {
+        if (error) {
+          Logger.warn("ERROR", error);
+        } else {
+          Logger.info("SMS SENT", result);
+        }
+      });
+    } else if (order.workflow.status === "canceled") {
+      customerNotifyAlert.message = "Your order has been canceled, more information about this is available on your Arakari Commerce dashboard. Keep it Arakari! 😊";
+      Meteor.call("sms/notif/alert", customerNotifyAlert, (error, result) => {
+        if (error) {
+          Logger.warn("ERROR", error);
+        } else {
+          Logger.info("SMS SENT", result);
+        }
+      });
+    }
 
     // Get shop logo, if available
     let emailLogo;
@@ -850,5 +968,30 @@ Meteor.methods({
       throw new Meteor.Error(
         "Attempt to refund transaction failed", result.error);
     }
+  },
+
+  /**
+   * sms/notif/alert
+   *
+   * @summary sends the sms alert
+   * @param {Object} currentUserId - current user Id
+   * @return {Boolean} the notification object or null
+   */
+  "sms/notif/alert": function (smsAlert) {
+    check(smsAlert, Object);
+    HTTP.call("POST", `${Meteor.settings.SMS.URL}${Meteor.settings.SMS.accountSID}/Messages.json`,
+      {
+        params:
+        {
+          From: Meteor.settings.SMS.phoneNumber,
+          To: smsAlert.to,
+          Body: smsAlert.message
+        },
+        auth: `${Meteor.settings.SMS.accountSID}:${Meteor.settings.SMS.authToken}`
+      }, (error, result) => {
+        error ? Logger.warn("ERROR IN SEDING THE SMS", error)
+        : Logger.info("New order sms alert sent to ", smsAlert.to, result);
+      }
+    );
   }
 });
