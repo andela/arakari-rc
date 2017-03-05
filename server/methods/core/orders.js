@@ -223,6 +223,16 @@ Meteor.methods({
   "orders/cancelOrder"(order) {
     check(order, Object);
 
+    if (order.email) {
+      Meteor.call("orders/sendNotification", order, (err) => {
+        if (err) {
+          Logger.error(err, "orders/cancelOrder: Failed to send notification");
+        }
+      });
+    } else {
+      Logger.warn("No order email found. No notification sent.");
+    }
+
     // Update Order
     return Orders.update(order._id, {
       $set: {
@@ -411,7 +421,7 @@ Meteor.methods({
       notifications.message = "🙌 Your order has been delivered!";
     }
 
-    if (order.workflow.status === "canceled") {
+    if (order.workflow.status === "coreOrderWorkflow/canceled") {
       notifications.name = "Order Canceled";
       notifications.type = "canceled";
       notifications.message = "❌ Your order has been cancelled!";
@@ -422,9 +432,16 @@ Meteor.methods({
     Notifications.insert(notifications);
 
     let locale;
-    Meteor.call("shop/getLocale", (err, res) => {
-      locale = res.countryCode || 254;
-    });
+
+    const countryAlphaCode = (order.billing[0].address.country).toUpperCase();
+
+    if (countryAlphaCode === "US") {
+      locale = 1;
+    } else if (countryAlphaCode === "KE"){
+      locale = 254;
+    } else if (countryAlphaCode === "NG"){
+      locale = 234;
+    }
 
     const customerNumber = `+${locale}${order.billing[0].address.phone}`;
 
@@ -449,7 +466,7 @@ Meteor.methods({
           Logger.info("SMS SENT", result);
         }
       });
-    } else if (order.workflow.status === "coreOrderItemWorkflow/shipped") {
+    } else if (order.workflow.status === "coreOrderWorkflow/completed" || order.workflow.status === "coreOrderItemWorkflow/shipped") {
       customerNotifyAlert.message = "Your order is on the way! 🚢 Keep it Arakari! 😊";
       Meteor.call("sms/notif/alert", customerNotifyAlert, (error, result) => {
         if (error) {
@@ -458,16 +475,7 @@ Meteor.methods({
           Logger.info("SMS SENT", result);
         }
       });
-    } else if (order.workflow.status === "coreOrderWorkflow/completed") {
-      customerNotifyAlert.message = "Your order has been delivered! 🙌 Keep it Arakari! 😊";
-      Meteor.call("sms/notif/alert", customerNotifyAlert, (error, result) => {
-        if (error) {
-          Logger.warn("ERROR", error);
-        } else {
-          Logger.info("SMS SENT", result);
-        }
-      });
-    } else if (order.workflow.status === "canceled") {
+    } else if (order.workflow.status === "coreOrderWorkflow/canceled") {
       customerNotifyAlert.message = "Your order has been canceled, more information about this is available on your Arakari Commerce dashboard. Keep it Arakari! 😊";
       Meteor.call("sms/notif/alert", customerNotifyAlert, (error, result) => {
         if (error) {
