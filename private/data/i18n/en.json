@@ -59,6 +59,8 @@
           "ordersDescription": "Fulfill your orders",
           "paypalLabel": "PayPal",
           "paypalTitle": "PayPal",
+          "paystackLabel": "Paystack",
+          "paystackTitle": "Paystack",
           "paypalDescription": "PayPal payments",
           "revisionsLabel": "Revisions",
           "revisionsTitle": "Revisions",
@@ -535,7 +537,7 @@
         }
       },
       "shop": {
-        "defaultPaymentMethod": "Default Payment Method",
+        "defaultPaymentMethod": "Defaults Payment Method",
         "name": "Name",
         "namePlaceholder": "Shop Name",
         "description": "Description",
