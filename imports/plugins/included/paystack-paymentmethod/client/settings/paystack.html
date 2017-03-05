@@ -1,0 +1,25 @@
+<template name="paystackSettings">
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Pay with Paystack</h3>
+    </div>
+    <div class="panel-body">
+      {{#autoForm
+        collection="ReactionCore.Collections.Packages"
+        schema=PaystackPackageConfig
+        doc=packageData
+        type="update"
+        id="paystack-update-form"
+        }}
+        {{>afQuickField name='settings.secretKey' value='sk_test_1ed81e77cfe8d7b5e19e9efb974718995f090cb3'}}
+        {{>afQuickField name='settings.publicKey'}}
+
+        <div class="form-group">
+          Don't have a Paystack account and/or key? <a href="https://dashboard.paystack.co/#/signup" target="_blank">Get one here.</a>
+        </div>
+        <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-save"></i> Update</button>
+      {{/autoForm}}
+    </div>
+  </div>
+</template>
