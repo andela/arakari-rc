@@ -438,11 +438,10 @@ Meteor.methods({
     const shopContact = shop.addressBook[0];
 
     const orderedItems = order.items.length;
-    let orderedProducts;
+    let orderedProducts = '';
     for (let i = 0; i < orderedItems; i += 1) {
       orderedProducts += ` ${order.items[i].title},`;
     }
-
     const customerNotifyAlert = {
       to: customerNumber,
       message: `We have received your order for ${orderedProducts} we are currently processing it. 🛒 Keep it Arakari! 😊`
