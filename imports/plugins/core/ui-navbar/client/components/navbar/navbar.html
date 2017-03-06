@@ -26,11 +26,17 @@
 </template>
 
 <template name="notifMsg">
+  {{#if displayNotification}}
     {{#each notification in displayNotification}}
       <li class="dropdown-apps-icon">
         {{notification.message}}
       </li>
     {{/each}}
+  {{else}}
+    <li>
+      Seems like that's it! ¯\_(ツ)_/¯
+    </li>
+  {{/if}}
 </template>
 
 
