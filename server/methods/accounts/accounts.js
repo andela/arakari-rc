@@ -458,5 +458,9 @@ Meteor.methods({
       $set: { 'profile.account': accountDetails.role }
     });
     return accountDetails.role;
+  },
+
+  "user/getCurrent": function(user) {
+    return Meteor.user()
   }
 });
