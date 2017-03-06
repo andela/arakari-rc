@@ -460,7 +460,11 @@ Meteor.methods({
     return accountDetails.role;
   },
 
-  "user/getCurrent": function(user) {
-    return Meteor.user()
+  /**
+   * user/getCurrentUser
+   * @returns current user
+   */
+  "user/getCurrentUser": function() {
+    return Meteor.user();
   }
 });

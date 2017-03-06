@@ -107,8 +107,9 @@ export default function () {
         roles[shopId] = shop.defaultVisitorRole || defaultVisitorRole;
       } else {
         Meteor.call('user/getCurrentUser', (err, res) => {
+          if (err) return alert(err)
           const current_user = res;
-          return user.profile.account = current_user.profile.account    
+          return user.profile.account = current_user.profile.account; 
         });
 
         // checks if user is a vendor and assigns the correct roles to user
