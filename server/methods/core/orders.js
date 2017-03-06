@@ -222,17 +222,6 @@ Meteor.methods({
    */
   "orders/cancelOrder"(order) {
     check(order, Object);
-
-    if (order.email) {
-      Meteor.call("orders/sendNotification", order, (err) => {
-        if (err) {
-          Logger.error(err, "orders/cancelOrder: Failed to send notification");
-        }
-      });
-    } else {
-      Logger.warn("No order email found. No notification sent.");
-    }
-
     // Update Order
     return Orders.update(order._id, {
       $set: {
@@ -421,7 +410,7 @@ Meteor.methods({
       notifications.message = "🙌 Your order has been delivered!";
     }
 
-    if (order.workflow.status === "coreOrderWorkflow/canceled") {
+    if (order.workflow.status === "canceled") {
       notifications.name = "Order Canceled";
       notifications.type = "canceled";
       notifications.message = "❌ Your order has been cancelled!";
@@ -463,7 +452,7 @@ Meteor.methods({
         if (error) {
           Logger.warn("ERROR", error);
         } else {
-          Logger.info("SMS SENT", result);
+          Logger.info("SMS SENT");
         }
       });
     } else if (order.workflow.status === "coreOrderWorkflow/completed" || order.workflow.status === "coreOrderItemWorkflow/shipped") {
@@ -472,16 +461,16 @@ Meteor.methods({
         if (error) {
           Logger.warn("ERROR", error);
         } else {
-          Logger.info("SMS SENT", result);
+          Logger.info("SMS SENT");
         }
       });
-    } else if (order.workflow.status === "coreOrderWorkflow/canceled") {
+    } else if (order.workflow.status === "canceled") {
       customerNotifyAlert.message = "Your order has been canceled, more information about this is available on your Arakari Commerce dashboard. Keep it Arakari! 😊";
       Meteor.call("sms/notif/alert", customerNotifyAlert, (error, result) => {
         if (error) {
           Logger.warn("ERROR", error);
         } else {
-          Logger.info("SMS SENT", result);
+          Logger.info("SMS SENT");
         }
       });
     }
@@ -1021,7 +1010,7 @@ Meteor.methods({
         },
         auth: `${Meteor.settings.SMS.accountSID}:${Meteor.settings.SMS.authToken}`
       }, (error, result) => {
-        error ? Logger.warn("ERROR IN SEDING THE SMS", error)
+        error ? Logger.warn("Error in sending the SMS", error)
         : Logger.info("New order sms alert sent to ", smsAlert.to, result);
       }
     );
