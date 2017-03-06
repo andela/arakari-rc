@@ -1,7 +1,14 @@
 import _ from "lodash";
-import { Cart, Shipping } from "/lib/collections";
-import { Meteor } from "meteor/meteor";
-import { Template } from "meteor/templating";
+import {
+    Cart,
+    Shipping
+} from "/lib/collections";
+import {
+    Meteor
+} from "meteor/meteor";
+import {
+    Template
+} from "meteor/templating";
 
 //
 // These helpers can be used in general shipping packages
@@ -32,13 +39,13 @@ function getShipmentMethod(currentCart) {
     return undefined;
 }
 
-Template.coreCheckoutShipping.onCreated(function() {
+Template.flatRateCheckoutShipping.onCreated(function() {
     this.autorun(() => {
         this.subscribe("Shipping");
     });
 });
 
-Template.coreCheckoutShipping.helpers({
+Template.flatRateCheckoutShipping.helpers({
     // retrieves current rates and updates shipping rates
     // in the users cart collection (historical, and prevents repeated rate lookup)
     shipmentQuotes: function() {
@@ -73,7 +80,7 @@ Template.coreCheckoutShipping.helpers({
 // this copies from shipmentMethods (retrieved rates)
 // to shipmentMethod (selected rate)
 //
-Template.coreCheckoutShipping.events({
+Template.flatRateCheckoutShipping.events({
     "click .list-group-item": function(event) {
         event.preventDefault();
         event.stopPropagation();
