@@ -392,11 +392,17 @@ Meteor.methods({
 
     const notifications = {
       userId: order.userId,
-      name: "Order Processing",
+      name: "Order Received",
       type: "new",
       message: "🛒 Your order just joined the processing queue!",
       orderId: order._id
     };
+
+    if (order.workflow.status === "coreOrderWorkflow/processing") {
+      notifications.name = "Order Processing";
+      notifications.type = "processing";
+      notifications.message = "🎁 Your order is currently being processed!";
+    }
 
     if (order.workflow.status === "coreOrderItemWorkflow/shipped") {
       notifications.name = "Order Shipped";
@@ -410,7 +416,7 @@ Meteor.methods({
       notifications.message = "🚢 Your order is on its way!";
     }
 
-    if (order.workflow.status === "canceled") {
+    if (order.workflow.status === "canceled" || order.workflow.status === "coreOrderWorkflow/canceled") {
       notifications.name = "Order Canceled";
       notifications.type = "canceled";
       notifications.message = "❌ Your order has been cancelled!";
@@ -454,7 +460,16 @@ Meteor.methods({
           Logger.info("SMS SENT");
         }
       });
-    } else if (order.workflow.status === "coreOrderWorkflow/completed" || order.workflow.status === "coreOrderItemWorkflow/shipped") {
+    } else if (order.workflow.status === "coreOrderWorkflow/processing") {
+      customerNotifyAlert.message = "Your order is currently being processed! 🎁 Keep it Arakari! 😊";
+      Meteor.call("sms/notif/alert", customerNotifyAlert, (error, result) => {
+        if (error) {
+          Logger.warn("ERROR", error);
+        } else {
+          Logger.info("SMS SENT");
+        }
+      });
+    }else if (order.workflow.status === "coreOrderWorkflow/completed" || order.workflow.status === "coreOrderItemWorkflow/shipped") {
       customerNotifyAlert.message = "Your order is on its way! 🚢 Keep it Arakari! 😊";
       Meteor.call("sms/notif/alert", customerNotifyAlert, (error, result) => {
         if (error) {
