@@ -106,21 +106,12 @@ export default function () {
       if (!user.services) {
         roles[shopId] = shop.defaultVisitorRole || defaultVisitorRole;
       } else {
-<<<<<<< Updated upstream
-        Meteor.call('user/getCurrentUser', (err, res) => {
-          if (err) return alert(err)
-          const current_user = res;
-          return user.profile.account = current_user.profile.account; 
-        });
-=======
          Meteor.call('user/getCurrentUser', (err, res) => {
           if (err) return alert(err)
           const current_user = res;
           user.profile.account = current_user.profile.account; 
           return user.profile.account
         });
-
->>>>>>> Stashed changes
 
         // checks if user is a vendor and assigns the correct roles to user
         if (user.profile.account === 'vendor') {
