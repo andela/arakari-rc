@@ -106,9 +106,8 @@ export default function () {
       if (!user.services) {
         roles[shopId] = shop.defaultVisitorRole || defaultVisitorRole;
       } else {
-        Meteor.call('user/getCurrent', (err, res) => {
+        Meteor.call('user/getCurrentUser', (err, res) => {
           const current_user = res;
-
           return user.profile.account = current_user.profile.account    
         });
 
