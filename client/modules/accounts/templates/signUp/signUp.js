@@ -80,7 +80,7 @@ Template.loginFormSignUpView.events({
       role: role
     };
 
-    Accounts.createUser(newUserData, (error) => {
+    Accounts.createUser(newUserData, function(error) {
       if (error) {
         // Show some error message
         templateInstance.formMessages.set({
