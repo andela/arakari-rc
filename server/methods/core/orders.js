@@ -391,7 +391,7 @@ Meteor.methods({
     this.unblock();
 
     const notifications = {
-      userId: Meteor.userId(),
+      userId: order.userId,
       name: "Order Processing",
       type: "new",
       message: "🛒 Your order just joined the processing queue!",
@@ -401,13 +401,13 @@ Meteor.methods({
     if (order.workflow.status === "coreOrderItemWorkflow/shipped") {
       notifications.name = "Order Shipped";
       notifications.type = "shipped";
-      notifications.message = "🚢 Your order is on the way!";
+      notifications.message = "🚢 Your order is on its way!";
     }
 
     if (order.workflow.status === "coreOrderWorkflow/completed") {
       notifications.name = "Order Completed";
       notifications.type = "completed";
-      notifications.message = "🙌 Your order has been delivered!";
+      notifications.message = "🚢 Your order is on its way!";
     }
 
     if (order.workflow.status === "canceled") {
@@ -455,7 +455,7 @@ Meteor.methods({
         }
       });
     } else if (order.workflow.status === "coreOrderWorkflow/completed" || order.workflow.status === "coreOrderItemWorkflow/shipped") {
-      customerNotifyAlert.message = "Your order is on the way! 🚢 Keep it Arakari! 😊";
+      customerNotifyAlert.message = "Your order is on its way! 🚢 Keep it Arakari! 😊";
       Meteor.call("sms/notif/alert", customerNotifyAlert, (error, result) => {
         if (error) {
           Logger.warn("ERROR", error);
@@ -463,8 +463,8 @@ Meteor.methods({
           Logger.info("SMS SENT");
         }
       });
-    } else if (order.workflow.status === "canceled") {
-      customerNotifyAlert.message = "Your order has been canceled, more information about this is available on your Arakari Commerce dashboard. Keep it Arakari! 😊";
+    } else if (order.workflow.status === "canceled" || order.workflow.status === "coreOrderWorkflow/canceled") {
+      customerNotifyAlert.message = `Your order has been canceled, for more information contact ${shopContact.company}. Keep it Arakari! 😊`;
       Meteor.call("sms/notif/alert", customerNotifyAlert, (error, result) => {
         if (error) {
           Logger.warn("ERROR", error);
@@ -572,7 +572,8 @@ Meteor.methods({
     Reaction.Email.send({
       to: order.email,
       from: `${shop.name} <${shop.emails[0].address}>`,
-      subject: `Your order is confirmed`,
+      subject: `Order updates from Arakari!`,
+      // subject: `Your order is confirmed`,
       // subject: `Order update from ${shop.name}`,
       html: SSR.render(tpl,  dataForOrderEmail)
     });
