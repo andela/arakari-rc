@@ -5,6 +5,7 @@ import { Meteor } from "meteor/meteor";
 import { Catalog } from "/lib/api";
 import { Media, Products, Revisions, Tags } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
+import { getShop } from "/server/imports/fixtures/shops";
 
 /**
  * Reaction Product Methods
@@ -668,15 +669,23 @@ Meteor.methods({
       return Products.insert(product);
     }
 
-    return Products.insert({
-      type: "simple" // needed for multi-schema
-    }, {
+    shopId = getShop()._id
+    
+    search = {
+      type: "simple",
+      vendorId: Meteor.userId(),
+      vendorShopId: shopId
+    }
+
+    return Products.insert(search, {
       validate: false
     }, (error, result) => {
       // additionally, we want to create a variant to a new product
       if (result) {
         Products.insert({
           ancestors: [result],
+          vendorId: Meteor.userId(),
+          vendorShopId: shopId,
           price: 0.00,
           title: "",
           type: "variant" // needed for multi-schema

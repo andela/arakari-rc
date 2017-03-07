@@ -96,7 +96,6 @@ Template.loginFormSignUpView.events({
             if (err) {
               alert(err);
             } else {
-              console.log(res)
               Meteor.call('shop/vendorShop', userId, res)
             }
           });

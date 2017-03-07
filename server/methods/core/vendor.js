@@ -11,6 +11,8 @@ Meteor.methods({
 
     const shop = getShop();
 
+    console.log(shop)
+
   	Collections.Accounts.update({
   		_id: vendorId
   	}, {

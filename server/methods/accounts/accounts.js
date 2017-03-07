@@ -1,6 +1,7 @@
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
+import { Session } from "meteor/session";
 
 /**
  * Reaction Account Methods
@@ -458,20 +459,6 @@ Meteor.methods({
       $set: { 'profile.account': accountDetails.role }
     });
     return accountDetails.role;
-  },
-
-  "admin/addProfile": function(accountDetails) {
-    check(accountDetails, {
-      userId: String,
-      role: String
-    });
-
-    Meteor.users.update(accountDetails.userId, {
-      $set: {
-        'profile': {},
-        'profile.account': accountDetails.role }
-    })
-    return Meteor.findOne({_id: accountDetails.userId})
   },
 
   /**
