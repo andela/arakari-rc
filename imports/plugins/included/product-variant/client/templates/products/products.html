@@ -22,7 +22,8 @@
       <div class="spinner"></div>
     </div>
   {{/if}}
-
+<hr>
+{{> socialFeeds}}
 
 </template>
 
@@ -31,6 +32,22 @@
     {{>productGrid products=products}}
     {{#if hasPermission "createProduct"}}
       {{>productList}}
+    {{/if}}
+  </div>
+</template>
+<template name="socialFeeds">
+  <div class="col-xs-12" style="z-index:10; padding:20px 60px">
+    {{#if facebookUrl}}
+      <div class="col-sm-6" style="padding:0 1em">
+        <iframe src={{facebookUrl}} style="border:none;overflow:auto;width:100%;height:400px" allowTransparency="true">
+        </iframe>
+      </div>
+    {{/if}}
+    {{#if twitterUrl}}
+      <div class="col-sm-6" style="padding:0 1em">
+        <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+        <a class="twitter-timeline" data-height="400" href={{twitterUrl}}>Tweets</a>
+      </div>
     {{/if}}
   </div>
 </template>
