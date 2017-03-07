@@ -1,47 +1,7 @@
-<template name='paystackPaymentForm'>
-  <form >
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
-  <script src="https://js.paystack.co/v1/inline.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-  <button type="button" class="btn btn-lg btn-success btn-block btn-complete-order" onclick="payWithPaystack()"> <i class="fa fa-money"></i>  Pay with Paystack </button> 
-</form>
- 
-<script>
-  function payWithPaystack(){
-    var handler = PaystackPop.setup({
-      key: 'pk_test_6860a0a85e1bbbb277c347e3e12e7f4373c8ba8c',
-      email: 'email@mail.com',
-      amount: 1000,
-      ref: 890568,
-      metadata: {
-         custom_fields: [
-            {
-                display_name: "Mobile Number",
-                variable_name: "mobile_number",
-                value: "92345678"
-            }
-         ]
-      },
-      callback: function(response){
-          swal({
-                title: "Successful",
-                text: "The payment was successful.Transaction Reference Number is :" + response.reference,
-                type: "success",
-                timer: 2000,
-                showConfirmButton: true
-              });
-      },
-      onClose: function(){
-          swal({
-                title: "Unsuccessful",
-                text: "The payment process has been terminated",
-                type: "error",
-                timer: 5000,
-                showConfirmButton: true
-              });
-      }
-    });
-    handler.openIframe();
-  }
-</script>
+<template name="paystackPaymentForm">
+  <div class="row">
+    <button type="submit" id="completeOrder" class="btn btn-lg btn-success btn-block btn-complete-order">
+      <span id="btn-complete-order">Pay with Paystack</span>
+    </button>
+  </div>
 </template>
