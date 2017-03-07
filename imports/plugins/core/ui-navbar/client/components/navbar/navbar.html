@@ -3,15 +3,12 @@
     <i class="{{notifIcon}}"><span class="badge badge-pill badge-custom">{{notifCount}}</span></i>
     <span class="caret"></span>
   </div>
-  {{#if findNotification}}
     {{> notifDropDown}}
-  {{/if}}
 </template>
 
 <template name="notifDropDown">
   <div class="dropdown-menu" role="menu">
    <div class="user-notifications-dropdown">
-     <center><div class="btn btn-custom btn-block" id="clearNotifications">Clear</div></center>
      <div class="user-notifications-dropdown-content">
       {{> DropdownApps}}
     </div>
@@ -27,15 +24,18 @@
 
 <template name="notifMsg">
   {{#if displayNotification}}
+    <center><div class="btn btn-custom btn-block" id="clearNotifications">Clear</div></center>
     {{#each notification in displayNotification}}
       <li class="dropdown-apps-icon">
         {{notification.message}}
       </li>
     {{/each}}
   {{else}}
-    <li>
-      Seems like that's it! ¯\_(ツ)_/¯
-    </li>
+    <center>
+      <h4>
+        Seems like that's it! <br/><br/> ¯\_(ツ)_/¯
+      </h4>
+    </center>
   {{/if}}
 </template>
 

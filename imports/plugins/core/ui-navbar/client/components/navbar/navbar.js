@@ -107,7 +107,7 @@ Template.notifList.onCreated(function () {
   });
 });
 
-Template.notifDropDown.events({
+Template.notifMsg.events({
   /**
    * Clear Notifications
    * @param  {Event} event - jQuery Event
