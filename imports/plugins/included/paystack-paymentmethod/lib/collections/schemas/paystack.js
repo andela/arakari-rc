@@ -7,7 +7,7 @@ export const PaystackPackageConfig = new SimpleSchema([
       type: String,
       label: "Public Key",
       min: 47,
-      optional: true
+      optional: false
     }
   }
 ]);
