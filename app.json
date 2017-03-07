@@ -26,18 +26,9 @@
     "PAPERTRAIL_API_TOKEN": {
       "required": true
     },
-    "accountSID": {
-      "required": true
-    },
-    "authToken": {
-      "required": true
-    },
-    "phoneNumber": {
-      "required": true
-    },
-    "SMS_URL": {
-      "required": true
-    }
+    "METEOR_SETTINGS": {
+			"required": true
+		}
   },
   "formation": {},
   "addons": [
