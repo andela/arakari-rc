@@ -1,5 +1,6 @@
 import { Template } from "meteor/templating";
 import { Packages } from "/lib/collections";
+import { Reaction } from "/client/api";
 import { PaystackPackageConfig } from "../../lib/collections/schemas";
 
 import "./paystack.html";
