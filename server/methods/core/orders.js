@@ -432,9 +432,9 @@ Meteor.methods({
 
     if (countryAlphaCode === "US") {
       locale = 1;
-    } else if (countryAlphaCode === "KE"){
+    } else if (countryAlphaCode === "KE") {
       locale = 254;
-    } else if (countryAlphaCode === "NG"){
+    } else if (countryAlphaCode === "NG") {
       locale = 234;
     }
 
