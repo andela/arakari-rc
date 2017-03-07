@@ -460,25 +460,11 @@ Meteor.methods({
     return accountDetails.role;
   },
 
-  "admin/addProfile": function(accountDetails) {
-    check(accountDetails, {
-      userId: String,
-      role: String
-    });
-
-    Meteor.users.update(accountDetails.userId, {
-      $set: {
-        'profile': {},
-        'profile.account': accountDetails.role }
-    })
-    return Meteor.findOne({_id: accountDetails.userId})
-  },
-
   /**
     * user/getCurrentUser
     * @returns current user
    */
- "user/getCurrentUser": function() {
-   return Meteor.user();
- }
+  "user/getCurrentUser": function() {
+    return Meteor.user();
+  } 
 });
