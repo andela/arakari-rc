@@ -71,8 +71,6 @@ Template.loginFormSignUpView.events({
     Meteor.call('user/addUserRole', accountDetails, (err, res) => {
       if (err) {
         alert(err);
-      } else {
-        // success!
       }
     });
 
