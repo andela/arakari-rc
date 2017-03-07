@@ -26,7 +26,16 @@
     "PAPERTRAIL_API_TOKEN": {
       "required": true
     },
-    "SMS": {
+    "accountSID": {
+      "required": true
+    },
+    "authToken": {
+      "required": true
+    },
+    "phoneNumber": {
+      "required": true
+    },
+    "URL": {
       "required": true
     }
   },
