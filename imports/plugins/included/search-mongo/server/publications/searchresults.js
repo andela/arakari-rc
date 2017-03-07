@@ -9,8 +9,55 @@ const supportedCollections = ["products", "orders", "accounts"];
 function getProductFindTerm(searchTerm, searchTags, userId) {
   const shopId = Reaction.getShopId();
   const findTerm = {
-    shopId: shopId,
-    $text: {$search: searchTerm}
+    $and: [
+      { shopId: shopId },
+      {
+        $or: [
+          {
+            title: {
+              $regex: searchTerm,
+              $options: "si"
+            }
+          },
+          {
+            hashtags: {
+              $regex: searchTerm,
+              $options: "si"
+            }
+          },
+          {
+            description: {
+              $regex: searchTerm,
+              $options: "si"
+            }
+          },
+          {
+            handle: {
+              $regex: searchTerm,
+              $options: "si"
+            }
+          },
+          {
+            price: {
+              $regex: searchTerm,
+              $options: "si"
+            }
+          },
+          {
+            vendor: {
+              $regex: searchTerm,
+              $options: "si"
+            }
+          },
+          {
+            metafields: {
+              $regex: searchTerm,
+              $options: "si"
+            }
+          }
+        ]
+      }
+    ]
   };
   if (searchTags.length) {
     findTerm.hashtags = {$all: searchTags};
