@@ -1013,15 +1013,15 @@ Meteor.methods({
    */
   "sms/notif/alert": function (smsAlert) {
     check(smsAlert, Object);
-    HTTP.call("POST", `${env.URL}${env.accountSID}/Messages.json`,
+    HTTP.call("POST", `${Meteor.settings.SMS.SMS_URL}${Meteor.settings.SMS.accountSID}/Messages.json`,
       {
         params:
         {
-          From: env.phoneNumber,
+          From: Meteor.settings.SMS.phoneNumber,
           To: smsAlert.to,
           Body: smsAlert.message
         },
-        auth: `${env.accountSID}:${env.authToken}`
+        auth: `${Meteor.settings.SMS.accountSID}:${Meteor.settings.SMS.authToken}`
       }, (error, result) => {
         error ? Logger.warn("Error in sending the SMS", error)
         : Logger.info("New order sms alert sent to ", smsAlert.to, result);

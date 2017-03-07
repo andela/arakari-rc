@@ -12,6 +12,6 @@
     "accountSID": "",
     "authToken": "",
     "phoneNumber": "",
-    "URL": ""
+    "SMS_URL": ""
   }
 }

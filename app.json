@@ -35,7 +35,7 @@
     "phoneNumber": {
       "required": true
     },
-    "URL": {
+    "SMS_URL": {
       "required": true
     }
   },
