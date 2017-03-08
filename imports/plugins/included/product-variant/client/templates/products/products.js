@@ -173,7 +173,7 @@ Template.products.events({
   }
 });
 // Social Feeds
-Template.socialFeeds.onCreated(function () {
+Template.socialContent.onCreated(function () {
   this.state = new ReactiveDict();
   this.state.setDefault({
     feeds: {}
@@ -189,7 +189,7 @@ Template.socialFeeds.onCreated(function () {
 /**
  * Helpers for social integration
  */
-Template.socialFeeds.helpers({
+Template.socialContent.helpers({
   facebookUrl() {
     const facebookConfig = Template.instance().state.get("feeds").facebook;
     // Check if configuration is enabled and profilepage is set
