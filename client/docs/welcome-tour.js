@@ -15,7 +15,7 @@ const tour = new Tour({
       element: "#lang",
       title: "Language",
       content: "Change the storefront language by clicking here and selecting language from the dropdown menu.",
-      placement: "left"
+      placement: "left" 
     },
     {
       element: "#acc",
