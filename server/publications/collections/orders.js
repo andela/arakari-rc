@@ -1,5 +1,6 @@
-import { Orders } from "/lib/collections";
+import { Orders, Shops } from "/lib/collections";
 import { Reaction } from "/server/api";
+import { getShop } from "/server/imports/fixtures/shops";
 
 /**
  * orders
@@ -9,7 +10,11 @@ Meteor.publish("Orders", function () {
   if (this.userId === null) {
     return this.ready();
   }
-  const shopId = Reaction.getShopId();
+
+  const shop = Shops.findOne({vendorId: this.userId})
+
+  let shopId = shop._id
+
   if (!shopId) {
     return this.ready();
   }

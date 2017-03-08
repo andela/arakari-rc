@@ -81,8 +81,9 @@ Template.products.onCreated(function () {
 
     if (shop !== undefined) {
       const isOwner = Roles.userIsInRole(user, 'owner', shop._id);
+      const isAdmin = Roles.userIsInRole(user, 'admin', shop._id);
 
-      if (isOwner) {
+    if (isOwner && !isAdmin) {
         search = {
         ancestors: [],
         vendorShopId: shop._id } 
