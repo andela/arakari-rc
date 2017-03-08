@@ -28,7 +28,7 @@ const payWithPaystack = () => {
     },
     onClose: function(){
           swal({
-                title: "Unsuccessful",
+                title: "Payment Cancelled",
                 text: "The payment process has been terminated",
                 type: "error",
                 timer: 5000,
