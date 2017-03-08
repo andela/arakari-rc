@@ -458,5 +458,13 @@ Meteor.methods({
       $set: { 'profile.account': accountDetails.role }
     });
     return accountDetails.role;
-  }
+  },
+
+  /**
+    * user/getCurrentUser
+    * @returns current user
+   */
+  "user/getCurrentUser": function() {
+    return Meteor.user();
+  } 
 });
