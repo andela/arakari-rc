@@ -36,7 +36,7 @@ const tour = new Tour({
 tour.init();
 
 // Start the tour
-tour.start();
+tour.start().goTo(0);
 
 welcome = {
   start: function () {
