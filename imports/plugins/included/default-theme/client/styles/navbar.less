@@ -186,6 +186,7 @@
   white-space: nowrap;
   display: block;
   border-bottom: 1px solid @black10;
+  margin: 20px 0px 5px 0px;
 }
 
 .rui.navbar .accounts .dropdown .dropdown-apps-icon:last-child {
@@ -197,8 +198,9 @@
   align-items: center;
   color: @gray;
   text-decoration: none;
-  padding: 5px 0;
+  padding: 5px 5px 5px 5px;
   min-height: 44px;
+  font-size: 11pt;
 }
 
 .rui.navbar .accounts .dropdown .dropdown-apps-icon a:hover,
@@ -212,6 +214,77 @@
   border: 1px solid @dropdown-border;
   margin-top: 0;
   .right(0);
+  .left(auto);
+}
+
+.btn-custom {
+  background-color: #27bc16;
+  color: @white;
+  margin-bottom: 5px;
+  width: 50%;
+}
+
+.badge-custom {
+  background-color: #27bc16;
+  color: @white;
+}
+
+.rui.navbar .notifications .user-notifications-dropdown {
+  padding: 10px;
+}
+
+.rui.navbar .notifications  .user-notifications-dropdown-content {
+  min-width: 110px;
+  min-height: 50px;
+  // margin-bottom: 30px;
+  color: @gray-darker;
+}
+
+.rui.navbar .notifications ul {
+    padding: 0;
+}
+
+.rui.navbar .notifications .user-notifications-dropdown-apps {
+  margin: 0;
+}
+
+.rui.navbar .notifications .user-notifications-dropdown-apps i {
+  margin: 10px 10px 10px 6px;
+  width: 20px;
+  font-size: inherit;
+  text-align: center;
+}
+
+.rui.navbar .notifications .dropdown-apps-icon {
+  cursor: pointer;
+  white-space: nowrap;
+  display: block;
+}
+
+.rui.navbar .notifications .dropdown-apps-icon:last-child {
+  border-bottom: none;
+}
+
+.rui.navbar .notifications .dropdown-apps-icon a {
+  display: flex;
+  align-items: center;
+  color: @gray;
+  text-decoration: none;
+  padding: 5px 0;
+  min-height: 44px;
+}
+
+.rui.navbar .notifications .dropdown-apps-icon:hover,
+.rui.navbar .notifications .dropdown-apps-icon:focus {
+  color: @brand-primary-color;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+.rui.navbar .notifications .dropdown-menu {
+  border: 1px solid @dropdown-border;
+  margin-top: 0;
+  .right(300);
   .left(auto);
 }
 
@@ -251,25 +324,24 @@
 }
 
 .tooltip {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black;
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
 }
 
 .tooltip .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: green;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-
-    /* Position the tooltip */
-    position: absolute;
-    z-index: 1;
+  visibility: hidden;
+  width: 120px;
+  background-color: green;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
 }
 
 .tooltip:hover .tooltiptext {
-    visibility: visible;
+  visibility: visible;
 }
