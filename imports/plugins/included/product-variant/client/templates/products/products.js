@@ -1,7 +1,7 @@
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { applyProductRevision } from "/lib/api/products";
-import { Products, Tags, Accounts } from "/lib/collections";
+import { Products, Tags, Packages } from "/lib/collections";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
@@ -192,5 +192,42 @@ Template.products.events({
   "click [data-event-action=loadMoreProducts]": (event) => {
     event.preventDefault();
     loadMoreProducts();
+  }
+});
+// Social Feeds
+Template.socialContent.onCreated(function () {
+  this.state = new ReactiveDict();
+  this.state.setDefault({
+    feeds: {}
+  });
+  this.autorun(() => {
+    this.subscribe("Packages");
+    const feedsConfig = Packages.findOne({
+      name: "reaction-social"
+    });
+    this.state.set("feeds", feedsConfig.settings.public.apps);
+  });
+});
+/**
+ * Helpers for social integration
+ */
+Template.socialContent.helpers({
+  facebookUrl() {
+    const facebookConfig = Template.instance().state.get("feeds").facebook;
+    // Check if configuration is enabled and profilepage is set
+    if (facebookConfig.enabled && facebookConfig.appId !== "" && facebookConfig.profilePage !== "") {
+      // Get the index to substr and get page name using substr
+      const index = facebookConfig.profilePage.lastIndexOf("/") + 1;
+      // return IFrame src as per https://developers.facebook.com/docs/plugins/page-plugin
+      return `https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F${facebookConfig.profilePage.substr(index)}&tabs=timeline&width=1000&height=400&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=true&appId=${facebookConfig.appId}`;
+    }
+    return false;
+  },
+  twitterUrl() {
+    const twitterConfig = Template.instance().state.get("feeds").twitter;
+    if (twitterConfig.enabled && twitterConfig.profilePage !== "") {
+      return twitterConfig.profilePage;
+    }
+    return false;
   }
 });

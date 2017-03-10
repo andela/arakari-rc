@@ -465,7 +465,7 @@ Meteor.methods({
     * user/getCurrentUser
     * @returns current user
    */
- "user/getCurrentUser": function() {
-   return Meteor.user();
- }
+  "user/getCurrentUser": function() {
+    return Meteor.user();
+  } 
 });
