@@ -30,7 +30,6 @@ Template.ordersListItems.helpers({
     const { order } = Template.instance().data;
     const combinedItems = [];
 
-
     if (order) {
       // Lopp through all items in the order. The items are split into indivital items
       for (const orderItem of order.items) {
@@ -52,6 +51,9 @@ Template.ordersListItems.helpers({
           combinedItems.push(orderItem);
         }
       }
+
+      
+
 
       return combinedItems;
     }

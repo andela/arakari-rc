@@ -11,9 +11,9 @@ Meteor.publish("Orders", function () {
     return this.ready();
   }
 
-  const shop = Shops.findOne({vendorId: this.userId})
+  const shop = Reaction.getShopOwner(this.userId)
 
-  let shopId = shop._id
+  const shopId = shop._id
 
   if (!shopId) {
     return this.ready();
@@ -41,7 +41,7 @@ Meteor.publish("AccountOrders", function (userId, currentShopId) {
   if (typeof userId === "string" && this.userId !== userId) {
     return this.ready();
   }
-  const shopId = currentShopId || Reaction.getShopId();
+  const shopId = currentShopId || Reaction.getShopOwner(this.userId)._id;
   if (!shopId) {
     return this.ready();
   }
