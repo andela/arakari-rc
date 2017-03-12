@@ -1,3 +1,44 @@
+<template  name="notifList">
+  <div class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000">
+    <i class="{{notifIcon}}"><span class="badge badge-pill badge-custom">{{notifCount}}</span></i>
+    <span class="caret"></span>
+  </div>
+    {{> notifDropDown}}
+</template>
+
+<template name="notifDropDown">
+  <div class="dropdown-menu" role="menu">
+   <div class="user-notifications-dropdown">
+     <div class="user-notifications-dropdown-content">
+      {{> DropdownApps}}
+    </div>
+   </div>
+  </div>
+</template>
+
+<template name="DropdownApps">
+    <ul class="user-notifications-dropdown-apps">
+      {{> notifMsg}}
+    </ul>
+</template>
+
+<template name="notifMsg">
+  {{#if displayNotification}}
+    <center><div class="btn btn-custom btn-block" id="clearNotifications">Clear</div></center>
+    {{#each notification in displayNotification}}
+      <li class="dropdown-apps-icon">
+        {{notification.message}}
+      </li>
+    {{/each}}
+  {{else}}
+    <center>
+      <h4>
+        Seems like that's it! <br/><br/> ¯\_(ツ)_/¯
+      </h4>
+    </center>
+  {{/if}}
+</template>
+
 
 <template name="CoreNavigationBar">
   <div class="rui navbar">
@@ -6,11 +47,15 @@
     <div class="menu">
       {{> tagNav tagNavProps}}
     </div>
+    {{#if currentUser}}
+    <div class="notificationsList"></div>
+    <div class="notifications" data-step="4" data-intro="Notifications">{{> note tpl="notifList"}}</div>
+    {{/if}}
     <div class="tooltip" onclick="welcome.start()">
       <i class="help fa fa-car"></i>
       <span class="tooltiptext">Click to start the tour.</span>
     </div>
- 
+
       {{#if hasDashboardAccess}}
     <div class=" tooltip help"> <a href="javascript:void()" data-toggle='modal' data-target='#howVideo'><i class="fa fa-question fa-2x"></i></a>
     <span class="tooltiptext">Click to watch onboarding video.</span>

@@ -7,5 +7,11 @@
     "REACTION_EMAIL": ""
   },
   "isDebug": "info",
-  "public": {}
+  "public": {},
+  "SMS": {
+    "accountSID": "",
+    "authToken": "",
+    "phoneNumber": "",
+    "SMS_URL": ""
+  }
 }

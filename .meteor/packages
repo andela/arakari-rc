@@ -22,7 +22,7 @@ random@1.0.10
 reactive-var@1.0.10
 reactive-dict@1.1.8
 check@1.2.3
-http@1.2.9_1
+http
 ddp-rate-limiter@1.0.5
 underscore@1.0.9
 logging@1.1.15_1
@@ -96,3 +96,4 @@ practicalmeteor:sinon
 # Custom Packages
 flowkey:bootstrap-tour
 jquery
+meteorhacks:search-source
