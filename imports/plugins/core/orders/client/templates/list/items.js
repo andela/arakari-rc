@@ -52,9 +52,6 @@ Template.ordersListItems.helpers({
         }
       }
 
-      
-
-
       return combinedItems;
     }
 

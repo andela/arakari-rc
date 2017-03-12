@@ -11,14 +11,12 @@ Meteor.publish("Orders", function () {
     return this.ready();
   }
 
-  const shop = Reaction.getShopOwner(this.userId)
-
-  const shopId = shop._id
+  const shopId = Reaction.getShopId()
 
   if (!shopId) {
     return this.ready();
   }
-  if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
+  if (Roles.userIsInRole(this.userId, ["admin"], shopId)) {
     return Orders.find({
       shopId: shopId
     });
@@ -41,7 +39,7 @@ Meteor.publish("AccountOrders", function (userId, currentShopId) {
   if (typeof userId === "string" && this.userId !== userId) {
     return this.ready();
   }
-  const shopId = currentShopId || Reaction.getShopOwner(this.userId)._id;
+  const shopId = currentShopId || Reaction.getShopId();
   if (!shopId) {
     return this.ready();
   }

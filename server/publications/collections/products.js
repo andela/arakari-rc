@@ -99,7 +99,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
 
         // check if this user is a shopAdmin
         for (const thisShopId of productFilters.shops) {
-          if (Roles.userIsInRole(this.userId, ["owner", "createProduct"], thisShopId)) {
+          if (Roles.userIsInRole(this.userId, ["admin", "owner", "createProduct"], thisShopId)) {
             shopAdmin = true;
           }
         }

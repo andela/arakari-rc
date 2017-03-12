@@ -33,12 +33,8 @@ Template.dashboardOrdersList.helpers({
     return this.shipping[0].shipmentMethod.tracking;
   },
   shopName() {
-    order = Orders.findOne();
-
-    orderId = order.shopId
-    orderShop = Shops.findOne({ _id: orderId})
-
-    const shop = orderShop
+    const shop = Shops.findOne(this.shopId);
+    
     return shop !== null ? shop.name : void 0;
   }
 });
