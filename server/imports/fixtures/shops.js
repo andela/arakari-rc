@@ -4,7 +4,12 @@ import { Meteor } from "meteor/meteor";
 
 export function getShop() {
   createShopFactory();
-  vendorId = Meteor.userId()
+  const existingShop = Shops.findOne();
+  return existingShop || Factory.create("shop");
+}
+
+export function getCurrShop(vendorId) {
+  createShopFactory();
   let existingShop;
   if (vendorId) {
     existingShop = Shops.findOne({vendorId: vendorId});

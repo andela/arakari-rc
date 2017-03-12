@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import * as Collections from "/lib/collections";
-import { getShop } from "/server/imports/fixtures/shops";
+import { getCurrShop } from "/server/imports/fixtures/shops";
 
 Meteor.methods({
   
@@ -9,7 +9,7 @@ Meteor.methods({
   	check(vendorId, String)
     check(shopId, String)
 
-    const shop = getShop();
+    const shop = getCurrShop(vendorId);
 
     console.log(shop)
 

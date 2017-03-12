@@ -6,7 +6,7 @@ import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { GeoCoder, Logger, Reaction } from "/server/api";
 import { createShops } from "/server/imports/fixtures/shops";
-import { getShop } from "/server/imports/fixtures/shops";
+import { getCurrShop } from "/server/imports/fixtures/shops";
 
 /**
  * Reaction Shop Methods
@@ -99,7 +99,7 @@ Meteor.methods({
   },
 
   "shop/getShop": function() {
-    return getShop()
+    return getCurrShop(Meteor.userId())
   },
 
   /**

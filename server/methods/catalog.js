@@ -5,7 +5,7 @@ import { Meteor } from "meteor/meteor";
 import { Catalog } from "/lib/api";
 import { Media, Products, Revisions, Tags } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
-import { getShop } from "/server/imports/fixtures/shops";
+import { getCurrShop } from "/server/imports/fixtures/shops";
 
 /**
  * Reaction Product Methods
@@ -669,7 +669,7 @@ Meteor.methods({
       return Products.insert(product);
     }
 
-    shopId = getShop()._id
+    shopId = getCurrShop(Meteor.userId())._id
     
     search = {
       type: "simple",
