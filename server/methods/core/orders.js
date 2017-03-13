@@ -10,6 +10,7 @@ import { Cart, Media, Orders, Products, Shops, Notifications } from "/lib/collec
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
 import { HTTP } from "meteor/http";
+import * as Collections from "/lib/collections";
 
 /**
  * Reaction Order Methods
@@ -374,6 +375,27 @@ Meteor.methods({
   },
 
   /**
+   * notification/getUnreadCount
+   * @description gets notification counts
+   * @return {Number} returns unread notification count
+   */
+  "notification/getUnreadCount"() {
+    return Notifications.find({userId: Meteor.userId(), read: false}).count();
+  },
+
+  /**
+   * notifications/markReadAll
+   * @description marks notifications as read
+   * @return {Boolean} returns true
+   */
+  "notifications/markReadAll"() {
+    Notifications.update({userId: Meteor.userId()}, { $set: {
+      read: true
+    }}, {multi: true});
+    return true;
+  },
+
+  /**
    * orders/sendNotification
    *
    * @summary send order notification email
@@ -395,6 +417,7 @@ Meteor.methods({
       name: "Order Received",
       type: "new",
       message: "🛒 Your order just joined the processing queue!",
+      read: false,
       orderId: order._id
     };
 
