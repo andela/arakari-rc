@@ -163,6 +163,12 @@ export default {
     return shop && shop._id;
   },
 
+  getShopOwner(vendorId) {
+    const shop = Shops.findOne({vendorId: vendorId})
+    if (shop === undefined) return Shops.findOne()
+    return shop
+  },
+
   getDomain() {
     return url.parse(Meteor.absoluteUrl()).hostname;
   },
