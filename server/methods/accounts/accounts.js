@@ -1,6 +1,7 @@
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
+import { Session } from "meteor/session";
 
 /**
  * Reaction Account Methods

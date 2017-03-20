@@ -88,6 +88,18 @@ Template.loginFormSignUpView.events({
         });
       } else {
         // Close dropdown or navigate to page
+        const userId = Meteor.userId();
+
+        if (role === "vendor") {
+          // creates a new shop when a vendor user signs up
+          Meteor.call('shop/createVendorShop', userId, (err, res) => {
+            if (err) {
+              alert(err);
+            } else {
+              Meteor.call('shop/vendorShop', userId, res)
+            }
+          });
+        }
       }
     });
   }

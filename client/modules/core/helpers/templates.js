@@ -169,8 +169,19 @@ Template.registerHelper("toCamelCase", function (str) {
  * @return {String} returns site name
  */
 Template.registerHelper("siteName", function () {
-  const shop = Collections.Shops.findOne();
-  return typeof shop === "object" && shop.name ? shop.name : "";
+  const user = Accounts.user();
+  const shopId = Reaction.getShopId();
+  const isVendor = Roles.userIsInRole(user, "owner", shopId);
+
+  if (isVendor) {
+    Meteor.call('shop/getShop', (err, res) => {
+      if (err) return alert(err)
+        Session.set('Shop', res)
+    })
+    let shop = Session.get('Shop')
+    return typeof shop === "object" && shop.name ? shop.name : shop;
+  }
+  return 'REACTION'
 });
 
 /*

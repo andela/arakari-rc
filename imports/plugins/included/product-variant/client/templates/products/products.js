@@ -72,15 +72,37 @@ Template.products.onCreated(function () {
 
     const queryParams = Object.assign({}, tags, Reaction.Router.current().queryParams);
     this.subscribe("Products", scrollLimit, queryParams);
+    
+    const user = Meteor.users.findOne({
+      _id: Meteor.userId()
+    })
+
+    const shop = Session.get('Shop')
+
+    if (shop !== undefined) {
+      const isOwner = Roles.userIsInRole(user, 'owner', shop._id);
+      const isAdmin = Roles.userIsInRole(user, 'admin', shop._id);
+
+    if (isOwner && !isAdmin) {
+        search = {
+        ancestors: [],
+        vendorShopId: shop._id } 
+      } else {
+        search = {
+        ancestors: []
+      }
+    }
+    } else {
+      search = {
+        ancestors: []
+      }
+    }
 
     // we are caching `currentTag` or if we are not inside tag route, we will
     // use shop name as `base` name for `positions` object
     const currentTag = ReactionProduct.getTag();
-    const productCursor = Products.find({
-      ancestors: []
-      // keep this, as an example
-      // type: { $in: ["simple"] }
-    }, {
+
+    const productCursor = Products.find(search, {
       sort: {
         [`positions.${currentTag}.position`]: 1,
         [`positions.${currentTag}.createdAt`]: 1,
