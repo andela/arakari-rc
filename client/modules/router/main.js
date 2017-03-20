@@ -126,7 +126,7 @@ export function ReactionLayout(options = {}) {
         if (!newLayout) {
           BlazeLayout.render("notFound");
         } else {
-          const layoutToRender = Object.assign({}, newLayout.structure, options);
+          const layoutToRender = Object.assign({}, newLayout.structure, options, unauthorized);
           BlazeLayout.render(layout, layoutToRender);
         }
       }
