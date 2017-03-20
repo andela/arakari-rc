@@ -43,5 +43,9 @@ export const LoginFormSharedHelpers = {
 
   hasPasswordService() {
     return !!Package["accounts-password"];
+  },
+
+  vendor(){
+    return Session.get('isVendor')
   }
 };
