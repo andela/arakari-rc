@@ -69,3 +69,16 @@ Template.loginDropdown.events({
     template.$(".dropdown-toggle").dropdown("toggle");
   }
 });
+
+Template.walletButton.events({
+  /**
+ * wallet
+ * @param {Event} event - jQuery Event
+ * @param {Template} template - Blaze Template
+ * @return {void}
+ */
+  "click #wallet": (event) => {
+    event.preventDefault();
+    FlowRouter.go("/wallet");
+  }
+});
