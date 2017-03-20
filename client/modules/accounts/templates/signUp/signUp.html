@@ -40,9 +40,15 @@
     <div>
       <h5><b>I am a:</b></h5>
       <input type="radio" name="myAccount" value="customer"> Customer
-      <input type="radio" name="myAccount" value="vendor"> Vendor
+      <input id="is_vendor" type="radio" name="myAccount" value="vendor"> Vendor
     </div>
     <br>
+    {{#if vendor}}
+    <div class="form-group">
+      <label>Shop Name</label>
+      <input class="form-control login-input-shopName" type="text">
+    </div>
+    {{/if}}
     <div class="form-group">
       <button class="btn btn-primary btn-block" type="Submit" data-i18n="accountsUI.signUpButton" data-event-category="accounts" data-event-action="register">Register</button>
     </div>
