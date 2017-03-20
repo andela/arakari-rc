@@ -126,7 +126,7 @@ export function ReactionLayout(options = {}) {
         if (!newLayout) {
           BlazeLayout.render("notFound");
         } else {
-          const layoutToRender = Object.assign({}, newLayout.structure, options, unauthorized);
+          const layoutToRender = Object.assign({}, newLayout.structure, options);
           BlazeLayout.render(layout, layoutToRender);
         }
       }
@@ -178,7 +178,21 @@ Router.initPackageRoutes = () => {
     shop.route("/", {
       name: "index",
       action() {
-        ReactionLayout(Session.get("INDEX_OPTIONS") || {});
+        ReactionLayout({});
+      }
+    });
+
+    shop.route("/shop", {
+      name: "shops",
+      action() {
+        ReactionLayout(Session.get("INDEX_OPTIONS"));
+      }
+    });
+
+    shop.route("/shop/:id", {
+      name: "viewShop",
+      action() {
+        ReactionLayout(Session.get("SHOP_LAYOUT"));
       }
     });
 
