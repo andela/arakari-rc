@@ -20,3 +20,5 @@ import "./templates/layout/layout.html";
 
 import "./templates/theme/theme.html";
 import "./templates/theme/theme.js";
+import "./templates/static/aboutus.html";
+import "./templates/static/contacts.html";

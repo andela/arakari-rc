@@ -181,6 +181,35 @@ Router.initPackageRoutes = () => {
         ReactionLayout(Session.get("INDEX_OPTIONS") || {});
       }
     });
+    shop.route("/pages/:pageRoute/", {
+       action(params) {
+         ReactionLayout({
+           template: "pageView",
+           data: params.pageRoute
+         });
+       }
+     });
+ 
+     shop.route("/shop/:shopId", {
+       action(params) {
+         ReactionLayout({
+           template: "shopView",
+           data: params.shopId
+         });
+       }
+     });
+    shop.route("/aboutus", {
+      name: "aboutUs",
+      action() {
+        ReactionLayout(Session.get("ABOUT_US"));
+      }
+    });
+    shop.route("/contacts", {
+      name: "contacts",
+      action() {
+        ReactionLayout(Session.get("CONTACTS"));
+      }
+    });
 
     // get package registry route configurations
     for (const pkg of pkgs) {
