@@ -79,9 +79,7 @@ Template.CoreNavigationBar.helpers({
 });
 
 Template.notifMsg.onCreated(function () {
-  // Set notifications in a reactive variable
   this.notifications = ReactiveVar();
-  // Check for notifications on page load
   this.autorun(() => {
     const instance = this;
     Meteor.call("notifications/retrieveNotifications", Meteor.userId(), (err, res) => {
@@ -91,9 +89,7 @@ Template.notifMsg.onCreated(function () {
 });
 
 Template.notifList.onCreated(function () {
-  // Set notifications in a reactive variable
   this.notifications = ReactiveVar();
-  // Check for notifications on page load
   this.autorun(() => {
     const instance = this;
     Meteor.call("notification/getUnreadCount", (err, res) => {
