@@ -2,7 +2,14 @@
 import express from "express";
 import GraphQLHTTP from "express-graphql";
 import schema from "./graphqlSchema";
+import bodyParser from "body-parser";
+import jwt from "jsonwebtoken";
 import axios from "axios";
+import { Meteor } from "meteor/meteor";
+import bcrypt from "bcrypt";
+import SHA256 from "js-sha256";
+
+const secret = process.env.SECRET || "wearethepirateswhodontdoanything";
 
 const app = express();
 const PORT = 9090;
@@ -12,6 +19,45 @@ app.use("/graphql", GraphQLHTTP({
   graphiql: true,
   pretty: true
 }));
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+app.post("/api/login", Meteor.bindEnvironment((request, response) => {
+  const user = (Meteor.users.find({"emails.address": request.body.email}).fetch());
+  if (!user.length) {
+    return response.send(404).send({message: "User doesn't exist"});
+  }
+  const password = request.body.password;
+  const hash = user[0].services.password.bcrypt;
+  return bcrypt.compare(SHA256(password), hash, (err, res) => {
+    if (err) {
+      return response.status(500).send(err);
+    } else if (!res) {
+      return response.status(401).send({message: "Authentication failed"});
+    }
+    const token = jwt.sign(user[0], secret, {expiresIn: "24h"});
+    return response.status(200).send({message: "Login successful", token, expiresIn: "24h"});
+  });
+}));
+
+const verifyToken = (req, res, next) => {
+  const token = req.headers.authorization || req.headers["x-access-token"];
+  if (!token) {
+    return res.status(401)
+    .send({ message: "Authentication failed" });
+  }
+  return jwt.verify(token, secret, (err, decoded) => {
+    if (err) {
+      return res.status(401)
+      .send({ message: "Invalid token" });
+    }
+    req.decoded = decoded;
+    return next();
+  });
+};
+
+app.use(verifyToken);
 
 app.get("/api/users", (request, response) => {
   axios.post(`http://${request.headers.host}/graphql`,
