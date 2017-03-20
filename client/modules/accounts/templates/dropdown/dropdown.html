@@ -7,7 +7,9 @@
       <span id="logged-in-display-name"> {{displayName}}<b class="caret"></b></span>
     </div>
     <div class="dropdown-menu" role="menu">
+      {{> walletButton}}
       {{> userDropdown}}
+
     </div>
     {{else}}
     <div class="accounts-dropdown" data-event-category="accounts" data-event-action="accounts-dropdown-click">
@@ -66,3 +68,12 @@
   </li>
   {{/each}}
 </template>
+
+<template name="walletButton">
+  <li class="dropdown-apps-icon" id="wallet">
+    <a>
+    <i class="fa fa-google-wallet" aria-hidden="true"></i>
+    <span class="icon-text">Wallet</span>
+    </a>
+  </li>
+  </template>
