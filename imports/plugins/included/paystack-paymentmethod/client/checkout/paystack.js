@@ -1,7 +1,6 @@
 import "./paystack.html";
-import { Reaction } from "/client/api";
 import { Template } from "meteor/templating";
-import { Cart, Shops, Accounts, Packages } from "/lib/collections";
+import { Cart,  Accounts} from "/lib/collections";
 import  { Meteor } from "meteor/meteor";
 
 const orderPrice = () => {
@@ -19,22 +18,22 @@ const payWithPaystack = () => {
     reference: Math.random().toString(36).slice(-8),
     callback: function (response) {
       swal({
-            title: "Successful",
-            text: "The payment was successful.Transaction Reference Number is :" + response.reference,
-            type: "success",
-            timer: 2000,
-            showConfirmButton: true
-          });
+        title: "Successful",
+        text: "The payment was successful.Transaction Reference Number is :" + response.reference,
+        type: "success",
+        timer: 2000,
+        showConfirmButton: true
+      });
     },
-    onClose: function(){
-          swal({
-                title: "Payment Cancelled",
-                text: "The payment process has been terminated",
-                type: "error",
-                timer: 5000,
-                showConfirmButton: true
-              });
-      }
+    onClose: function () {
+      swal({
+        title: "Payment Cancelled",
+        text: "The payment process has been terminated",
+        type: "error",
+        timer: 5000,
+        showConfirmButton: true
+      });
+    }
   });
   handler.openIframe();
 };
