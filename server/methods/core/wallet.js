@@ -82,5 +82,21 @@ Meteor.methods({
     } catch (error) {
       return false;
     }
+  },
+
+  "wallet/getUser": () => {
+    return Accounts.findOne(Meteor.userId());
+  },
+
+  "wallets/updateWallet": (amount) => {
+    check(amount, Number);
+
+    Wallets.update({
+      userId: Meteor.userId()
+    }, {
+      $inc: {
+        balance: amount
+      }
+    });
   }
 });
