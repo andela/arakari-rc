@@ -43,8 +43,8 @@ Template.loginFormSignUpView.events({
 
     const email = emailInput.val().trim();
     const password = passwordInput.val().trim();
-    if (shopNameInput === undefined) {
-      const shopName = shopNameInput.val().trim();
+    if (shopNameInput !== undefined) {
+      shopName = shopNameInput.val();
     }
     const role = event.target.myAccount.value;
 
