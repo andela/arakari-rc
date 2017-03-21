@@ -289,10 +289,11 @@ Meteor.methods({
    *  @param {Number} [itemQty] - qty to add to cart
    *  @return {Number|Object} Mongo insert response
    */
-  "cart/addToCart": function (productId, variantId, itemQty) {
+  "cart/addToCart": function (productId, variantId, itemQty, isDigital) {
     check(productId, String);
     check(variantId, String);
     check(itemQty, Match.Optional(Number));
+    check(isDigital, Boolean);
 
     const cart = Collections.Cart.findOne({ userId: this.userId });
     if (!cart) {
@@ -341,6 +342,9 @@ Meteor.methods({
         "_id": cart._id,
         "items.variants._id": variantId
       }, {
+        $addToSet: {
+           isDigital: isDigital
+         },
         $inc: {
           "items.$.quantity": quantity
         }
@@ -370,6 +374,7 @@ Meteor.methods({
       _id: cart._id
     }, {
       $addToSet: {
+        isDigital: isDigital,
         items: {
           _id: Random.id(),
           shopId: product.shopId,
@@ -489,6 +494,7 @@ Meteor.methods({
    * cart. reusing the cart schema makes sense, but integrity of the order, we
    * don't want to just make another cart item
    * @todo:  Partial order processing, shopId processing
+   * @param {Boolean} isDigital- isDigital or checking for digital product
    * @todo:  Review Security on this method
    * @param {String} cartId - cartId to transform to order
    * @return {String} returns orderId
@@ -496,6 +502,8 @@ Meteor.methods({
   "cart/copyCartToOrder": function (cartId) {
     check(cartId, String);
     const cart = Collections.Cart.findOne(cartId);
+    const productId = cart.items[0].productId;
+    const product = Collections.Products.findOne(productId);
     // security check
     if (cart.userId !== this.userId) {
       throw new Meteor.Error(403, "Access Denied");
@@ -592,13 +600,17 @@ Meteor.methods({
       Logger.error(msg);
       throw new Meteor.Error("no-cart-items", msg);
     }
+    let orderId = {};
 
-    // set new workflow status
-    order.workflow.status = "new";
-    order.workflow.workflow = ["coreOrderWorkflow/created"];
-
-    // insert new reaction order
-    const orderId = Collections.Orders.insert(order);
+    if (product.isDigital) {
+       order.workflow.status = "coreOrderWorkflow/completed";
+       order.workflow.workflow = ["coreOrderWorkflow/created", "coreOrderWorkflow/processing", "coreOrderWorkflow/completed"];
+       order.items[0].workflow.workflow = ["coreOrderItemWorkflow/packed", "coreOrderItemWorkflow/completed"];
+       orderId = Collections.Orders.insert(order);
+     } else {
+       order.workflow.status = "new";
+       order.workflow.workflow = ["coreOrderWorkflow/created"];
+     }
     Logger.info("Created orderId", orderId);
 
     if (orderId) {

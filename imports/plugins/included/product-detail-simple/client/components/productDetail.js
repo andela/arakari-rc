@@ -2,7 +2,9 @@ import React, { Component, PropTypes } from "react";
 import {
   Button,
   Currency,
+  Divider,
   DropDownMenu,
+  FieldGroup,
   MenuItem,
   Translation,
   Toolbar,
@@ -16,8 +18,26 @@ import {
 } from "./";
 import { AlertContainer } from "/imports/plugins/core/ui/client/containers";
 import { PublishContainer } from "/imports/plugins/core/revisions";
+import { Reaction } from "/client/api";
+import { Audio, Video, Software, Book } from "/lib/collections";
+import "./digitalProducts.css";
 
 class ProductDetail extends Component {
+  constructor(props) {
+   super(props);
+   this.state = {
+     digital: this.props.isDigital,
+     cartQuantityType: "number",
+     categoryValue: "",
+     downloadUrl: "",
+     fileId: this.props.product.productFileId
+   };
+   this.switchDigital = this.switchDigital.bind(this);
+   this.handleCategoryStateChange = this.handleCategoryStateChange.bind(this);
+   this.handleUploadClick = this.handleUploadClick.bind(this);
+   this.deleteFile = this.deleteFile.bind(this);
+ }
+
   get tags() {
     return this.props.tags || [];
   }
@@ -73,6 +93,121 @@ class ProductDetail extends Component {
 
     return null;
   }
+
+  switchDigital(e) {
+    this.setState({digital: e.target.checked});
+    const productId = this.props.product._id;
+    const checked = e.target.checked;
+    this.props.onProductFieldChange(productId, "isDigital", checked);
+    this.props.changeParentIsDigitalState(e.target.checked);
+    if (!this.state.digital) {
+      this.setState({cartQuantityType: "hidden"});
+    } else {
+      this.setState({cartQuantityType: "number"});
+    }
+  }
+
+  renderInputToggle() {
+    if (this.props.hasAdminPermission) {
+      return (
+        <div className="switch-middle">
+          <b className="switch-text">Physical Product</b>
+            <label className="switch">
+              <input id="digital" type="checkbox" defaultChecked={this.state.digital} onChange={this.switchDigital}/>
+              <div className="slider round"/>
+            </label>
+          <b className="switch-text">Digital Product</b>
+        </div>
+      );
+    }
+
+    return null;
+  }
+
+  handleCategoryStateChange(e) {
+    const value = e.target.value;
+    this.setState({categoryValue: value});
+  }
+
+  handleUploadClick(e) {
+    const files = new FS.File(e.target.files[0]);
+    files.metadata = {
+    productId: this.props.product._id,
+    ownerId: Meteor.userId(),
+    shopId: Reaction.getShopId()
+    };
+
+    const insertDigitalFile = (db, Alerts) => {
+      db.insert(files, (err, file) => {
+        if (err) {
+          return Alerts.toast("Something went wrong", "warning");
+        }
+        if (file) {
+          this.setState({fileId: file._id});
+          const digitalInfo = {
+            fileId: file._id,
+            category: this.state.categoryValue
+          };
+
+          this.props.onProductFieldChange(this.props.product._id, "productFileId", file._id);
+          this.props.onProductFieldChange(this.props.product._id, "digitalInfo", digitalInfo);
+          return Alerts.toast("File successfully uploaded", "success");
+          }
+        return "File Insert Failed";
+      });
+    };
+    if (this.state.categoryValue === "audio") {
+      return insertDigitalFile(Audio, Alerts);
+    } else if (this.state.categoryValue === "video") {
+      return insertDigitalFile(Video, Alerts);
+    } else if (this.state.categoryValue === "book") {
+      return insertDigitalFile(Book, Alerts);
+    } else if (this.state.categoryValue === "software") {
+      return insertDigitalFile(Software, Alerts);
+    }
+    return "Invalid Category Specified";
+  }
+  get download() {
+    const result = Audio.findOne({_id: this.state.fileId});
+    return (new FS.File(result).url());
+  }
+
+  deleteFile() {
+    if (this.state.fileId) {
+      return (
+        <button className="btn btn-danger no-round">Delete Uploaded File</button>
+      );
+    }
+    return null;
+  }
+
+  renderDigitalDetails() {
+    if (this.props.hasAdminPermission && this.state.digital) {
+      return (
+        <div>
+          <Divider
+            label="Digital product options"
+          />
+          <FieldGroup
+            componentClass="select"
+            name="digitalCategory"
+            onChange={this.handleCategoryStateChange}
+          >
+            <option value="">Choose a category..</option>
+            <option value="audio">Audio</option>
+            <option value="book">Book</option>
+            <option value="video">Video</option>
+            <option value="software">Software</option>
+          </FieldGroup>
+
+          <input className="btn btn-success hidden" type="file" id="uploadFile" onChange={this.handleUploadClick}/>
+          <label className="btn btn-success no-round" htmlFor="uploadFile">Upload Digital product</label>
+          {this.deleteFile()}
+        </div>
+      );
+    }
+      return null;
+    }
 
   render() {
     return (
@@ -162,6 +297,8 @@ class ProductDetail extends Component {
                     placeholder: "Description"
                   }}
                 />
+                {this.renderInputToggle()}
+                {this.renderDigitalDetails()}
               </div>
 
               <div className="options-add-to-cart">
@@ -172,6 +309,7 @@ class ProductDetail extends Component {
                 <AlertContainer placement="productDetail" />
                 <AddToCartButton
                   cartQuantity={this.props.cartQuantity}
+                  inputType={this.state.cartQuantityType}
                   onCartQuantityChange={this.props.onCartQuantityChange}
                   onClick={this.props.onAddToCart}
                 />
@@ -186,8 +324,10 @@ class ProductDetail extends Component {
 
 ProductDetail.propTypes = {
   cartQuantity: PropTypes.number,
+  changeParentIsDigitalState: PropTypes.func,
   editable: PropTypes.bool,
   hasAdminPermission: PropTypes.bool,
+  isDigital: PropTypes.bool,
   mediaGalleryComponent: PropTypes.node,
   onAddToCart: PropTypes.func,
   onCartQuantityChange: PropTypes.func,
@@ -197,6 +337,7 @@ ProductDetail.propTypes = {
   priceRange: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   product: PropTypes.object,
   socialComponent: PropTypes.node,
+  vendorName: PropTypes.string,
   tags: PropTypes.arrayOf(PropTypes.object),
   topVariantComponent: PropTypes.node,
   viewAs: PropTypes.string
