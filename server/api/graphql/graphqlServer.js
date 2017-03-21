@@ -36,7 +36,8 @@ app.post("/api/login", Meteor.bindEnvironment((request, response) => {
     } else if (!res) {
       return response.status(401).send({message: "Authentication failed"});
     }
-    const token = jwt.sign(user[0], secret, {expiresIn: "24h"});
+    const payload = { userId: user[0]._id };
+    const token = jwt.sign(payload, secret, {expiresIn: "24h"});
     return response.status(200).send({message: "Login successful", token, expiresIn: "24h"});
   });
 }));
