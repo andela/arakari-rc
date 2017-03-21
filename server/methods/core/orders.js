@@ -10,6 +10,7 @@ import { Cart, Media, Orders, Products, Shops, Notifications } from "/lib/collec
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
 import { HTTP } from "meteor/http";
+import * as Collections from "/lib/collections";
 
 /**
  * Reaction Order Methods
@@ -57,6 +58,12 @@ Meteor.methods({
         "coreOrderWorkflow", "coreOrderDocuments", order._id);
     }
   },
+
+  // fetch orders from db
+  "orders/getOrder": () => {
+    return Orders.find({}).fetch();
+  },
+
 
   /**
    * orders/shipmentPacked
