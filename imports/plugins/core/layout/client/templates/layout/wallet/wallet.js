@@ -2,7 +2,7 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
-import { Accounts, Packages, Wallets, Shops } from "/lib/collections";
+import { Cart, Accounts, Packages, Wallets, Shops } from "/lib/collections";
 import Alert from "sweetalert2";
 import bcrypt from "bcrypt-nodejs";
 
@@ -26,6 +26,11 @@ const getPaystackSettings = () => {
     shopId: Reaction.getShopId()
   });
   return settings;
+};
+
+const orderPrice = () => {
+  const cart = Cart.findOne();
+  return parseInt(cart.cartTotal() * 100 * 3.06);
 };
 
 const finalizeDeposit = (paystackMethod) => {
@@ -84,37 +89,6 @@ function handlePayment(result) {
   });
 }
 
-// Paystack payment
-const payWithPaystack = () => {
-  const userAccountInfo = Accounts.find(Meteor.userId()).fetch();
-  const emailAddress = userAccountInfo[0].emails[0].address;
-  const handler = PaystackPop.setup({
-    key: "pk_test_6860a0a85e1bbbb277c347e3e12e7f4373c8ba8c",
-    email: emailAddress,
-    amount: orderPrice(),
-    reference: Math.random().toString(36).slice(-8),
-    callback: function (response) {
-      swal({
-        title: "Successful",
-        text: "The payment was successful.Transaction Reference Number is :" + response.reference,
-        type: "success",
-        timer: 2000,
-        showConfirmButton: true
-      });
-    },
-    onClose: function () {
-      swal({
-        title: "Payment Cancelled",
-        text: "The payment process has been terminated",
-        type: "error",
-        timer: 5000,
-        showConfirmButton: true
-      });
-    }
-  });
-  handler.openIframe();
-};
-
 Template.wallet.helpers({
   getBalance() {
     const balance = Template.instance().state.get("details");
@@ -148,8 +122,10 @@ Template.wallet.events({
   },
   "submit #deposit": (event) => {
     event.preventDefault();
-    const accountDetails = Accounts.find(Meteor.userId()).fetch();
-    const userMail = accountDetails[0].emails[0].address;
+    Meteor.call("wallet/getUser", (err, res) => {
+      Session.set("userDetails", res.emails[0].address);
+    });
+    const userMail = Session.get("userDetails");
     const mailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$/i;
     if (!mailRegex.test(userMail)) {
       Alerts.toast("Invalid email address", "error");
@@ -157,10 +133,10 @@ Template.wallet.events({
     }
     try {
       const amount = parseInt(document.getElementById("depositAmount").value, 10);
-      if (amount > 100000) {
+      if (amount > 500) {
         Alerts.toast("You can only deposit ₦100,000 per transaction", "error");
       } else {
-        payWithPaystack(userMail, amount);
+        Meteor.call("wallets/updateWallet", amount);
       }
     } catch (err) {
       Alerts.toast("Invalid Deposit Amount, You can only deposit ₦100,000 per transaction", "error");
