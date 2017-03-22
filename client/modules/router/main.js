@@ -135,6 +135,44 @@ export function ReactionLayout(options = {}) {
   return options;
 }
 
+export function ReactionLayoutAuth(options = {}) {
+  const layout = options.layout || Session.get("DEFAULT_LAYOUT") || "coreLayout";
+  const workflow = options.workflow || Session.get("DEFAULT_WORKFLOW") || "coreWorkflow";
+  console.log(options);
+  if (!options.layout) {
+    options.layout = "coreLayout";
+  }
+  if (!options.workflow) {
+    options.workflow = "coreWorkflow";
+  }
+
+  // check if router has denied permissions
+  // see: checkRouterPermissions
+  const unauthorized = {};
+  if (Router.current().unauthorized) {
+    unauthorized.template = "unauthorized";
+  }
+
+  // autorun router rendering
+  Tracker.autorun(function () {
+    if (Reaction.Subscriptions.Shops.ready()) {
+      const shop = Shops.findOne(Reaction.getShopId());
+      if (shop) {
+        const newLayout = shop.layout.find((x) => selectLayout(x, layout, workflow));
+        // oops this layout wasn't found. render notFound
+        if (!newLayout) {
+          BlazeLayout.render("notFound");
+        } else {
+          const layoutToRender = Object.assign({}, newLayout.structure, options);
+          BlazeLayout.render(layout, layoutToRender);
+        }
+      }
+    }
+  });
+  return options;
+}
+
+
 // default not found route
 Router.notFound = {
   action() {
@@ -201,13 +239,13 @@ Router.initPackageRoutes = () => {
     shop.route("/aboutus", {
       name: "aboutUs",
       action() {
-        ReactionLayout(Session.get("ABOUT_US"));
+        ReactionLayoutAuth(Session.get("ABOUT_US"));
       }
     });
     shop.route("/contacts", {
       name: "contacts",
       action() {
-        ReactionLayout(Session.get("CONTACTS"));
+        ReactionLayoutAuth(Session.get("CONTACTS"));
       }
     });
 
