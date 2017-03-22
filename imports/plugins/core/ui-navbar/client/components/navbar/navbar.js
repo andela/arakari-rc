@@ -3,16 +3,11 @@ import { FlatButton } from "/imports/plugins/core/ui/client/components";
 import { Reaction } from "/client/api";
 import { Tags } from "/lib/collections";
 import { Template } from "meteor/templating";
+import { Notifications } from "/lib/collections";
+import * as Collections from "/lib/collections";
 
 Template.CoreNavigationBar.onCreated(function () {
   this.state = new ReactiveDict();
-  this.notifications = ReactiveVar();
-   this.autorun(() => {
-     const instance = this;
-     Meteor.call("notifications/retrieveNotifications", Meteor.userId(), (err, res) => {
-       instance.notifications.set(res);
-     });
-   });
 });
 
 /**
@@ -84,9 +79,7 @@ Template.CoreNavigationBar.helpers({
 });
 
 Template.notifMsg.onCreated(function () {
-  // Set notifications in a reactive variable
   this.notifications = ReactiveVar();
-  // Check for notifications on page load
   this.autorun(() => {
     const instance = this;
     Meteor.call("notifications/retrieveNotifications", Meteor.userId(), (err, res) => {
@@ -96,13 +89,11 @@ Template.notifMsg.onCreated(function () {
 });
 
 Template.notifList.onCreated(function () {
-  // Set notifications in a reactive variable
   this.notifications = ReactiveVar();
-  // Check for notifications on page load
   this.autorun(() => {
     const instance = this;
-    Meteor.call("notifications/retrieveNotifications", Meteor.userId(), (err, res) => {
-      instance.notifications.set(res.length);
+    Meteor.call("notification/getUnreadCount", (err, res) => {
+      instance.notifications.set(res);
     });
   });
 });
@@ -131,8 +122,15 @@ Template.notifList.helpers({
     return (Template.instance().notifications.get() > 0);
   }
 });
+
 Template.notifMsg.helpers({
   displayNotification() {
     return Template.instance().notifications.get();
+  }
+});
+
+Template.notifList.events({
+  "click #clearReadCount": () => {
+    Meteor.call("notifications/markReadAll");
   }
 });
