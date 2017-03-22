@@ -3,6 +3,7 @@ import React from "react";
 import { DataType } from "react-taco-table";
 import { Template } from "meteor/templating";
 import { i18next } from "/client/api";
+import { Session } from "meteor/session";
 import { ProductSearch, Tags, OrderSearch, AccountSearch } from "/lib/collections";
 import { IconButton, SortableTable } from "/imports/plugins/core/ui/client/components";
 
@@ -43,10 +44,56 @@ Template.searchModal.onCreated(function () {
     }
   });
 
+  // Filter products by price
+const priceFilter = (products, query) =>  {
+  return _.filter(products, (product) => {
+    if (product.price) {
+      const productMaxPrice = parseFloat(product.price.max);
+      const productMinPrice = parseFloat(product.price.min);
+      const queryMaxPrice = parseFloat(query[1]);
+      const queryMinPrice = parseFloat(query[0]);
+      if (productMinPrice >= queryMinPrice && productMaxPrice <= queryMaxPrice) {
+        return product;
+      }
+      return false;
+    }
+  });
+};
+// Sort products by price
+const sort = (products, type) => {
+  return products.sort((a, b) => {
+    const A = a.price === null ? -1 : a.price.min;
+    const B = b.price === null ? -1 : b.price.min;
+    if (A < B) {
+      return type === "DESC" ? 1 : -1;
+    } else if (A > B) {
+      return type === "ASC" ? 1 : -1;
+    }
+    return 0;
+  });
+};
+
+
+// Filter products by brand
+function brandFilter(products, query) {
+  return _.filter(products, (product) => {
+    return product.vendor === query;
+  });
+}
+
+// Filter products by shop
+function shopFilter(products, query) {
+  return _.filter(products, (product) => {
+    return product.shopId === query;
+  });
+}
 
   this.autorun(() => {
     const searchCollection = this.state.get("searchCollection") || "products";
     const searchQuery = this.state.get("searchQuery");
+    const priceQuery = Session.get("priceFilter");
+    const brandQuery = Session.get("brandFilter");
+    const sortQuery = Session.get("sortValue");
     const facets = this.state.get("facets") || [];
     const sub = this.subscribe("SearchResults", searchCollection, searchQuery, facets);
 
@@ -55,7 +102,17 @@ Template.searchModal.onCreated(function () {
        * Product Search
        */
       if (searchCollection === "products") {
-        const productResults = ProductSearch.find().fetch();
+        let productResults = ProductSearch.find().fetch();
+        if (!["null", "all"].includes(priceQuery) && priceQuery) {
+          const range = priceQuery.split("-");
+          productResults =  priceFilter(productResults, range);
+        }
+        if (!["null", "all"].includes(brandQuery) && brandQuery) {
+          productResults = brandFilter(productResults, brandQuery);
+        }
+        if (sortQuery !== "null" && sortQuery) {
+          productResults = sort(productResults, sortQuery);
+        }
         const productResultsCount = productResults.length;
         this.state.set("productSearchResults", productResults);
         this.state.set("productSearchCount", productResultsCount);
