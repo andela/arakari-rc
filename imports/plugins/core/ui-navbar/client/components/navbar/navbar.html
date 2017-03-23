@@ -1,6 +1,10 @@
 <template  name="notifList">
-  <div class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000">
-    <i class="{{notifIcon}}"><span class="badge badge-pill badge-custom">{{notifCount}}</span></i>
+  <div class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" id="clearReadCount" data-delay="1000">
+    <i class="{{notifIcon}}">
+      {{#if notifCount}}
+        <span class="badge badge-pill badge-custom">{{notifCount}}</span>
+      {{/if}}
+      </i>
     <span class="caret"></span>
   </div>
     {{> notifDropDown}}

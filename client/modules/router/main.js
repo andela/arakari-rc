@@ -126,6 +126,43 @@ export function ReactionLayout(options = {}) {
         if (!newLayout) {
           BlazeLayout.render("notFound");
         } else {
+          const layoutToRender = Object.assign({}, newLayout.structure, options, unauthorized);
+          BlazeLayout.render(layout, layoutToRender);
+        }
+      }
+    }
+  });
+  return options;
+}
+
+export function ReactionLayoutAuth(options = {}) {
+  const layout = options.layout || Session.get("DEFAULT_LAYOUT") || "coreLayout";
+  const workflow = options.workflow || Session.get("DEFAULT_WORKFLOW") || "coreWorkflow";
+  console.log(options);
+  if (!options.layout) {
+    options.layout = "coreLayout";
+  }
+  if (!options.workflow) {
+    options.workflow = "coreWorkflow";
+  }
+
+  // check if router has denied permissions
+  // see: checkRouterPermissions
+  const unauthorized = {};
+  if (Router.current().unauthorized) {
+    unauthorized.template = "unauthorized";
+  }
+
+  // autorun router rendering
+  Tracker.autorun(function () {
+    if (Reaction.Subscriptions.Shops.ready()) {
+      const shop = Shops.findOne(Reaction.getShopId());
+      if (shop) {
+        const newLayout = shop.layout.find((x) => selectLayout(x, layout, workflow));
+        // oops this layout wasn't found. render notFound
+        if (!newLayout) {
+          BlazeLayout.render("notFound");
+        } else {
           const layoutToRender = Object.assign({}, newLayout.structure, options);
           BlazeLayout.render(layout, layoutToRender);
         }
@@ -134,6 +171,7 @@ export function ReactionLayout(options = {}) {
   });
   return options;
 }
+
 
 // default not found route
 Router.notFound = {
@@ -185,14 +223,34 @@ Router.initPackageRoutes = () => {
     shop.route("/shop", {
       name: "shops",
       action() {
-        ReactionLayout(Session.get("INDEX_OPTIONS"));
+        ReactionLayoutAuth(Session.get("SHOPS"));
       }
     });
 
     shop.route("/shop/:id", {
       name: "viewShop",
       action() {
-        ReactionLayout(Session.get("SHOP_LAYOUT"));
+        ReactionLayoutAuth(Session.get("SHOP_LAYOUT"));
+      }
+    });
+    
+    shop.route("/aboutus", {
+      name: "aboutUs",
+      action() {
+        ReactionLayoutAuth(Session.get("ABOUT_US"));
+      }
+    });
+    shop.route("/contacts", {
+      name: "contacts",
+      action() {
+        ReactionLayoutAuth(Session.get("CONTACTS"));
+      }
+    });
+
+    shop.route("/wallet", {
+      name: "wallet",
+      action() {
+        ReactionLayoutAuth({template: "wallet"});
       }
     });
 

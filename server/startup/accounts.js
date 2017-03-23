@@ -155,6 +155,13 @@ export default function () {
       account.userId = user._id;
       Collections.Accounts.insert(account);
 
+      Collections.Wallets.insert({
+        userId: user._id,
+        userPin: "0",
+        transactions: [],
+        balance: 0.0
+      });
+
       // send a welcome email to new users,
       // but skip the first default admin user
       // (default admins already get a verification email)

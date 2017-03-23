@@ -10,6 +10,7 @@ import { Cart, Media, Orders, Products, Shops, Notifications } from "/lib/collec
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
 import { HTTP } from "meteor/http";
+import * as Collections from "/lib/collections";
 
 /**
  * Reaction Order Methods
@@ -57,6 +58,12 @@ Meteor.methods({
         "coreOrderWorkflow", "coreOrderDocuments", order._id);
     }
   },
+
+  // fetch orders from db
+  "orders/getOrder": () => {
+    return Orders.find({}).fetch();
+  },
+
 
   /**
    * orders/shipmentPacked
@@ -374,6 +381,27 @@ Meteor.methods({
   },
 
   /**
+   * notification/getUnreadCount
+   * @description gets notification counts
+   * @return {Number} returns unread notification count
+   */
+  "notification/getUnreadCount"() {
+    return Notifications.find({userId: Meteor.userId(), read: false}).count();
+  },
+
+  /**
+   * notifications/markReadAll
+   * @description marks notifications as read
+   * @return {Boolean} returns true
+   */
+  "notifications/markReadAll"() {
+    Notifications.update({userId: Meteor.userId()}, { $set: {
+      read: true
+    }}, {multi: true});
+    return true;
+  },
+
+  /**
    * orders/sendNotification
    *
    * @summary send order notification email
@@ -395,6 +423,7 @@ Meteor.methods({
       name: "Order Received",
       type: "new",
       message: "🛒 Your order just joined the processing queue!",
+      read: false,
       orderId: order._id
     };
 
@@ -450,7 +479,7 @@ Meteor.methods({
     }
     const customerNotifyAlert = {
       to: customerNumber,
-      message: `We have received your order for ${orderedProducts} we are currently processing it. 🛒 Keep it Arakari! 😊`
+      message: `We have received your order for ${orderedProducts} we are currently processing it. Keep it Arakari!`
     };
     if (order.workflow.status === "new") {
       Meteor.call("sms/notif/alert", customerNotifyAlert, (error, result) => {
@@ -461,7 +490,7 @@ Meteor.methods({
         }
       });
     } else if (order.workflow.status === "coreOrderWorkflow/processing") {
-      customerNotifyAlert.message = "Your order is currently being processed! 🎁 Keep it Arakari! 😊";
+      customerNotifyAlert.message = "Your order is currently being processed! Keep it Arakari!";
       Meteor.call("sms/notif/alert", customerNotifyAlert, (error, result) => {
         if (error) {
           Logger.warn("ERROR", error);
@@ -470,7 +499,7 @@ Meteor.methods({
         }
       });
     }else if (order.workflow.status === "coreOrderWorkflow/completed" || order.workflow.status === "coreOrderItemWorkflow/shipped") {
-      customerNotifyAlert.message = "Your order is on its way! 🚢 Keep it Arakari! 😊";
+      customerNotifyAlert.message = "Your order is on its way! Keep it Arakari!";
       Meteor.call("sms/notif/alert", customerNotifyAlert, (error, result) => {
         if (error) {
           Logger.warn("ERROR", error);
@@ -479,7 +508,7 @@ Meteor.methods({
         }
       });
     } else if (order.workflow.status === "canceled" || order.workflow.status === "coreOrderWorkflow/canceled") {
-      customerNotifyAlert.message = `Your order has been canceled, for more information contact ${shopContact.company}. Keep it Arakari! 😊`;
+      customerNotifyAlert.message = `Your order has been canceled, for more information contact ${shopContact.company}. Keep it Arakari!`;
       Meteor.call("sms/notif/alert", customerNotifyAlert, (error, result) => {
         if (error) {
           Logger.warn("ERROR", error);
