@@ -126,7 +126,7 @@ export function ReactionLayout(options = {}) {
         if (!newLayout) {
           BlazeLayout.render("notFound");
         } else {
-          const layoutToRender = Object.assign({}, newLayout.structure, options);
+          const layoutToRender = Object.assign({}, newLayout.structure, options, unauthorized);
           BlazeLayout.render(layout, layoutToRender);
         }
       }
@@ -216,26 +216,24 @@ Router.initPackageRoutes = () => {
     shop.route("/", {
       name: "index",
       action() {
-        ReactionLayout(Session.get("INDEX_OPTIONS") || {});
+        ReactionLayout({});
       }
     });
-    shop.route("/pages/:pageRoute/", {
-       action(params) {
-         ReactionLayout({
-           template: "pageView",
-           data: params.pageRoute
-         });
-       }
-     });
- 
-     shop.route("/shop/:shopId", {
-       action(params) {
-         ReactionLayout({
-           template: "shopView",
-           data: params.shopId
-         });
-       }
-     });
+
+    shop.route("/shop", {
+      name: "shops",
+      action() {
+        ReactionLayoutAuth(Session.get("SHOPS"));
+      }
+    });
+
+    shop.route("/shop/:id", {
+      name: "viewShop",
+      action() {
+        ReactionLayoutAuth(Session.get("SHOP_LAYOUT"));
+      }
+    });
+    
     shop.route("/aboutus", {
       name: "aboutUs",
       action() {
@@ -252,7 +250,7 @@ Router.initPackageRoutes = () => {
     shop.route("/wallet", {
       name: "wallet",
       action() {
-        ReactionLayout({template: "wallet"});
+        ReactionLayoutAuth({template: "wallet"});
       }
     });
 

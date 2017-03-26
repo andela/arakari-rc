@@ -8,10 +8,8 @@ Meteor.methods({
   "shop/vendorShop": function (vendorId, shopId) {
   	check(vendorId, String)
     check(shopId, String)
-
+    
     const shop = getCurrShop(vendorId);
-
-    console.log(shop)
 
   	Collections.Accounts.update({
   		_id: vendorId

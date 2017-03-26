@@ -1,0 +1,11 @@
+<template name="shopsLanding">
+  {{#each shop in shops}}
+  <div class="shop-grid">
+    <a href="{{pathFor 'viewShop' id=shop._id}}">
+    	<div class="shop-grid-items">
+    		{{shop.name}}
+    	</div>
+    </a>
+  </div>
+  {{/each}}
+</template>

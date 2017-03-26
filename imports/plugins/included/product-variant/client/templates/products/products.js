@@ -50,6 +50,7 @@ Template.products.onCreated(function () {
 
   // Update product subscription
   this.autorun(() => {
+    const id = Reaction.Router.getParam("id");
     const slug = Reaction.Router.getParam("slug");
     const tag = Tags.findOne({ slug: slug }) || Tags.findOne(slug);
     const scrollLimit = Session.get("productScrollLimit");
@@ -73,30 +74,42 @@ Template.products.onCreated(function () {
     const queryParams = Object.assign({}, tags, Reaction.Router.current().queryParams);
     this.subscribe("Products", scrollLimit, queryParams);
     
-    const user = Meteor.users.findOne({
-      _id: Meteor.userId()
-    })
+    if (!id) {
+      const user = Meteor.users.findOne({
+        _id: Meteor.userId()
+      })
+      const shop = Session.get('Shop')
+      Session.set('viewShop', false)
 
-    const shop = Session.get('Shop')
+      if (shop !== undefined) {
+        const isOwner = Roles.userIsInRole(user, 'owner', shop._id);
+        const isAdmin = Roles.userIsInRole(user, 'admin', shop._id);
 
-    if (shop !== undefined) {
-      const isOwner = Roles.userIsInRole(user, 'owner', shop._id);
-      const isAdmin = Roles.userIsInRole(user, 'admin', shop._id);
-
-    if (isOwner && !isAdmin) {
-        search = {
-        ancestors: [],
-        vendorShopId: shop._id } 
+        if (isOwner && !isAdmin) {
+            search = {
+            ancestors: [],
+            vendorShopId: shop._id } 
+          } else {
+            search = {
+            ancestors: []
+          }
+        }
       } else {
         search = {
-        ancestors: []
+          ancestors: []
+        }
       }
     }
-    } else {
+    else {
+      Meteor.call('shop/getCurrentViewShops', id, (err, res) => {
+        Session.set('viewShop', res[0].name)
+      })
       search = {
-        ancestors: []
+        ancestors: [],
+        vendorShopId: id
       }
     }
+
 
     // we are caching `currentTag` or if we are not inside tag route, we will
     // use shop name as `base` name for `positions` object
@@ -167,6 +180,10 @@ Template.products.helpers({
     }
 
     return false;
+  },
+
+  viewShop() {
+    return Session.get('viewShop')
   }
 });
 
