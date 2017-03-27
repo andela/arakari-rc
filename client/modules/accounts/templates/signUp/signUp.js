@@ -21,10 +21,6 @@ Template.loginFormSignUpView.helpers(LoginFormSharedHelpers);
  * Events: Login form sign up view
  */
 Template.loginFormSignUpView.events({
-  'change #is_vendor' : function (){
-    Session.set('isVendor', true)
-  },
-
   /**
    * Submit sign up form
    * @param  {Event} event - jQuery Event
@@ -34,18 +30,12 @@ Template.loginFormSignUpView.events({
   "submit form": function (event, template) {
     event.preventDefault();
 
-    Session.set('isVendor', false)
-
     // var usernameInput = template.$(".login-input--username");
     const emailInput = template.$(".login-input-email");
     const passwordInput = template.$(".login-input-password");
-    const shopNameInput = template.$(".login-input-shopName");
 
     const email = emailInput.val().trim();
     const password = passwordInput.val().trim();
-    if (shopNameInput !== undefined) {
-      shopName = shopNameInput.val();
-    }
     const role = event.target.myAccount.value;
 
     const validatedEmail = LoginFormValidation.email(email);
@@ -102,7 +92,7 @@ Template.loginFormSignUpView.events({
 
         if (role === "vendor") {
           // creates a new shop when a vendor user signs up
-          Meteor.call('shop/createVendorShop', userId, shopName, (err, res) => {
+          Meteor.call('shop/createVendorShop', userId, (err, res) => {
             if (err) {
               alert(err);
             } else {

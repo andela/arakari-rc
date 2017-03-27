@@ -24,7 +24,6 @@ export const methods = {
 
     return Taxes.remove(taxId);
   },
-  
 
   /**
    * taxes/setRate

@@ -120,4 +120,3 @@ Meteor.methods({
     return false;
   }
 });
-

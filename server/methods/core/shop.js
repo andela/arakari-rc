@@ -64,9 +64,8 @@ Meteor.methods({
    * @param {Object} shopData - optionally provide shop object to customize
    * @return {String} return shopId
    */
-  "shop/createVendorShop": function(shopVendorUserId, shopName) {
+  "shop/createVendorShop": function(shopVendorUserId) {
     check(shopVendorUserId, Match.Optional(String));
-    check(shopName, String)
     // must have owner access to create new shops
     if (!Reaction.hasOwnerAccess()) {
       throw new Meteor.Error(403, "Access Denied");
@@ -85,8 +84,7 @@ Meteor.methods({
     const shop = createShops();
 
     shop._id = Random.id();
-    shop.name = shopName || 'Shop Name';
-    shop.isVisible = true;
+    shop.name = 'Shop Name';
     shop.vendorId = shopVendorUserId;
 
     Collections.Shops.insert(shop);
@@ -102,15 +100,6 @@ Meteor.methods({
 
   "shop/getShop": function() {
     return getCurrShop(Meteor.userId())
-  },
-
-  "shop/getShops": function() {
-    return Collections.Shops.find({isVisible: true}).fetch()
-  },
-
-  "shop/getCurrentViewShops": function(id) {
-    check(id, String)
-    return Collections.Shops.find({_id: id}).fetch()
   },
 
   /**
