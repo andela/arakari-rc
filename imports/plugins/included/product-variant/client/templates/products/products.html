@@ -1,9 +1,4 @@
 <template name="products">
-  {{#if viewShop}}
-    <div style="text-align: center;">
-      <h1>{{viewShop}}</h1>
-    </div>
-  {{/if}}
 
   {{#if ready}}
     {{>productGrid products=products}}
