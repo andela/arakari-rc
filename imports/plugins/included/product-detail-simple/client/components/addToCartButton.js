@@ -17,15 +17,14 @@ class AddToCartButton extends Component {
           id="add-to-cart-quantity"
           min="1"
           name="addToCartQty"
+          onChange={this.handleCartQuantityChange}
           type={this.props.inputType}
-          type="number"
           value={this.props.cartQuantity}
         />
         <button
           className="input-group-addon add-to-cart-text js-add-to-cart"
           data-i18n="productDetail.addToCart"
           onClick={this.props.onClick}
-          id="add-to-cart"
         >
           <Translation defaultValue="Add to cart" i18nKey="productDetail.addToCart" />
         </button>

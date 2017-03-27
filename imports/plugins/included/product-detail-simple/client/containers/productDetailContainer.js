@@ -38,7 +38,7 @@ class ProductDetailContainer extends Component {
     const currentVariant = ReactionProduct.selectedVariant();
     const currentProduct = ReactionProduct.selectedProduct();
 
-    if (currentVariant) {
+    if (currentVariant.length !== 0) {
       if (currentVariant.ancestors.length === 1) {
         const options = ReactionProduct.getVariants(currentVariant._id);
 

@@ -610,6 +610,9 @@ Meteor.methods({
      } else {
        order.workflow.status = "new";
        order.workflow.workflow = ["coreOrderWorkflow/created"];
+
+       // insert new reaction order
+       orderId = Collections.Orders.insert(order);
      }
     Logger.info("Created orderId", orderId);
 
