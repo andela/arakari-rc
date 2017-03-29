@@ -89,6 +89,7 @@ Template.loginFormSignUpView.events({
       password: password,
       role: role
     };
+    
 
     Accounts.createUser(newUserData, function(error) {
       if (error) {
