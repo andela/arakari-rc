@@ -97,7 +97,6 @@ Template.loginFormSignUpView.events({
           alerts: [error]
         });
       } else {
-        // Close dropdown or navigate to page
         const userId = Meteor.userId();
 
         if (role === "vendor") {

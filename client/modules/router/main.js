@@ -138,7 +138,6 @@ export function ReactionLayout(options = {}) {
 export function ReactionLayoutAuth(options = {}) {
   const layout = options.layout || Session.get("DEFAULT_LAYOUT") || "coreLayout";
   const workflow = options.workflow || Session.get("DEFAULT_WORKFLOW") || "coreWorkflow";
-  console.log(options);
   if (!options.layout) {
     options.layout = "coreLayout";
   }
