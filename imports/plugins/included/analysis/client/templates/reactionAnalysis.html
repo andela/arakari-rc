@@ -63,7 +63,7 @@
   </div>
 </p>
 <script type="text/javascript">
-const getOrder = () => {
+const getOrders = () => {
   Meteor.call("orders/getOrder", (err, res) => {
     Session.set("orders", res);
   });
@@ -246,6 +246,6 @@ const lineGraph = new Chart(line, {
 
   return Session.get("orders");
 };
-getOrder();
+getOrders();
 </script>
 </template>
