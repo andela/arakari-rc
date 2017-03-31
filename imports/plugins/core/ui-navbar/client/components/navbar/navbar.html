@@ -62,9 +62,9 @@
 
       {{#if hasDashboardAccess}}
     <div class=" tooltip help"> <a href="javascript:void()" data-toggle='modal' data-target='#howVideo'><i class="fa fa-question fa-2x"></i></a>
-    <span class="tooltiptext">Click to watch onboarding video.</span>
      </div>
        {{/if}}
+    <div class="accounts">{{> accounts tpl="staticPageNav"}}</div>
     <div class="search" id="nav_search">{{> React IconButtonComponent}}</div>
     <div class="languages hidden-xs" id="lang">{{> i18nChooser}}</div>
     <div class="accounts" id="acc">{{> accounts tpl="loginDropdown"}}</div>

@@ -24,3 +24,5 @@ import "./templates/theme/theme.html";
 import "./templates/theme/theme.js";
 import "./templates/static/aboutus.html";
 import "./templates/static/contacts.html";
+import "./templates/layout/staticPages/page.html";
+import "./templates/layout/staticPages/page.js";
