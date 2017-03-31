@@ -1,0 +1,68 @@
+<template name="staticPages">
+   <div class="container">
+     <div class="col-md-8">
+       <h1 id="header">Create a New Page</h1>
+       <a href="#" class="create-page">Add Page <i class="fa fa-plus" aria-hidden="true"></i></a>
+       <hr>
+       <form class="new_page">
+         <div class="form-group">
+           <label for="page-title">Page Title:</label>
+           <input type="text" class="form-control" name="title" id="static-page-title" placeholder="Enter page title">
+         </div>
+         <div class="input-group">
+           <span class="input-group-addon" id="basic-addon3">{{baseUrl}}/pages/</span>
+           <input type="text" class="form-control" id="static-page-slug" aria-describedby="basic-addon3" placeholder="slug">
+         </div>
+         <h4>Page Content:</h4>
+         <textarea cols="20" rows="10" name="body" id="static-page-content"></textarea>
+         <script>
+           
+         </script>
+         <br>
+         <div class="form-group">
+           <div class="pull-left">
+             <button type="submit" class="btn btn-info" id="btn-update">Create Page</button>
+           </div>
+         </div>
+       </form>
+     </div>
+     <div class="col-md-4">
+       <ul>
+         {{#if displayPages }}
+          <h3 class="text-center">Manage Your Custom Pages</h3>
+           {{ #each displayPages }}
+             {{> displayPageName }}
+           {{ /each }}
+         {{/if}}
+       </ul>
+     </div>
+   </div>
+ </template>
+ 
+ <template name="displayPageName">
+   <table class="pageNames">
+     <tr>
+       <td style="width: 250px">
+         <span> <strong> {{ title }} </strong></span>
+       </td>
+       <td>
+         <button type="button" title="Edit Page" class="btn btn-default edit-page" aria-label="Edit Page">
+         <span class="fa fa-pencil-square-o" aria-hidden="true"></span>
+         </button>
+       </td>
+       <td>
+         <a href="/pages/{{slug}}">
+           <button type="button" title="Preview" class="btn btn-default" aria-label="Preview">
+             <span class="fa fa-eye" aria-hidden="true"></span>
+           </button>
+         </a>
+       </td>
+       <td>
+         <button type="button" title="Delete" class="btn btn-default delete-page" aria-label="Delete">
+           <span class="fa fa-trash-o text-danger" aria-hidden="true"></span>
+         </button>
+       </td>
+     </tr>
+     <br>
+   </table>
+ </template> 
