@@ -4,7 +4,6 @@ import { Template } from "meteor/templating";
  import { Reaction } from "/client/api";
  
  Template.staticPages.onCreated(() => {
-    // Subscribe to Pages publication
    Meteor.subscribe("staticPages");
  });
  
@@ -13,11 +12,9 @@ import { Template } from "meteor/templating";
  });
  
  Template.staticPages.helpers({
-   // Get base Url
    baseUrl() {
      return window.location.host;
    },
-   // Get pages Created
    displayPages() {
      return StaticPages.find().fetch();
    }
