@@ -245,19 +245,6 @@ Router.initPackageRoutes = () => {
          });
        }
      });
-    shop.route("/aboutus", {
-      name: "aboutUs",
-      action() {
-        ReactionLayoutAuth(Session.get("ABOUT_US"));
-      }
-    });
-    shop.route("/contacts", {
-      name: "contacts",
-      action() {
-        ReactionLayoutAuth(Session.get("CONTACTS"));
-      }
-    });
-
     shop.route("/wallet", {
       name: "wallet",
       action() {
