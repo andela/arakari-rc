@@ -28,7 +28,7 @@
          {{#if displayPages }}
           <h3 class="text-center">Manage Pages</h3>
            {{ #each displayPages }}
-             {{> displayPageName }}
+             {{> Pagedisplay }}
            {{ /each }}
          {{/if}}
        </ul>
@@ -36,14 +36,14 @@
    </div>
  </template>
  
- <template name="displayPageName">
-   <table class="pageNames">
+ <template name="Pagedisplay">
+   <table class="pagetitles">
      <tr>
-       <td style="width: 250px">
+       <td>
          <span> <strong> {{ title }} </strong></span>
        </td>
        <td>
-         <button type="button" title="Edit Page" class="btn btn-default edit-page" aria-label="Edit Page">
+         <button type="button" title="Edit Page" class="btn btn-default" aria-label="Edit Page">
          <span class="fa fa-pencil-square-o" aria-hidden="true"></span>
          </button>
        </td>
