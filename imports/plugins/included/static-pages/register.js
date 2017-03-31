@@ -1,6 +1,5 @@
 import { Reaction } from "/server/api";
- 
- 
+  
  Reaction.registerPackage({
    label: "Static Pages",
    name: "staticpages",
