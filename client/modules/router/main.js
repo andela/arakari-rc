@@ -219,6 +219,15 @@ Router.initPackageRoutes = () => {
         ReactionLayout(Session.get("INDEX_OPTIONS") || {});
       }
     });
+    // Pages routes
+    Router.route("/pages/:slug", {
+      action(params) {
+        ReactionLayout({
+          template: "staticPageView",
+          slug: params.slug
+        });
+      }
+    });
     shop.route("/pages/:pageRoute/", {
        action(params) {
          ReactionLayout({
