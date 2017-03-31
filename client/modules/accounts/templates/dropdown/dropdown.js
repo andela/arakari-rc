@@ -83,11 +83,11 @@ Template.walletButton.events({
     FlowRouter.go("/wallet");
   }
 });
-Template.staticPageNav.onCreated(() => {
+Template.pages.onCreated(() => {
    Meteor.subscribe("staticPages");
  });
  
- Template.staticPageNav.helpers({
+ Template.pages.helpers({
    staticPages() {
      return StaticPages.find({shopId: Reaction.shopId}).fetch();
    }
