@@ -110,13 +110,9 @@ class ProductDetail extends Component {
   renderInputToggle() {
     if (this.props.hasAdminPermission) {
       return (
-        <div className="switch-middle">
-          <b className="switch-text">Physical Product</b>
-            <label className="switch">
-              <input id="digital" type="checkbox" defaultChecked={this.state.digital} onChange={this.switchDigital}/>
-              <div className="slider round"/>
-            </label>
-          <b className="switch-text">Digital Product</b>
+        <div className="checkbox checkbox-primary">
+          <input id="isdigital" type="checkbox" defaultChecked={this.state.digital} onChange={this.switchDigital}/>
+          <label for="isdigital">Product is Digital </label>
         </div>
       );
     }
