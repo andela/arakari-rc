@@ -219,6 +219,15 @@ Router.initPackageRoutes = () => {
         ReactionLayout(Session.get("INDEX_OPTIONS") || {});
       }
     });
+    // Pages routes
+    Router.route("/pages/:slug", {
+      action(params) {
+        ReactionLayout({
+          template: "staticPageView",
+          slug: params.slug
+        });
+      }
+    });
     shop.route("/pages/:pageRoute/", {
        action(params) {
          ReactionLayout({
@@ -236,19 +245,6 @@ Router.initPackageRoutes = () => {
          });
        }
      });
-    shop.route("/aboutus", {
-      name: "aboutUs",
-      action() {
-        ReactionLayoutAuth(Session.get("ABOUT_US"));
-      }
-    });
-    shop.route("/contacts", {
-      name: "contacts",
-      action() {
-        ReactionLayoutAuth(Session.get("CONTACTS"));
-      }
-    });
-
     shop.route("/wallet", {
       name: "wallet",
       action() {

@@ -49,7 +49,26 @@
     {{/each}}
   </ul>
 </template>
-
+<template name="pages">
+  {{#if staticPages}}
+  <div class="dropdown" role="menu">
+    <div class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000">
+      <span id="logged-in-display-name"> More <b class="caret"></b></span>
+    </div>
+    <div class="dropdown-menu static-pages-dropdown" role="menu">
+      {{#each staticPage in staticPages}}
+      <li class="dropdown-apps-icon">
+        <a href="/pages/{{staticPage.slug}}" id="{{staticPage.title}}" title="{{staticPage.title}}">          <i class=""></i>
+           <span class="icon-text">
+             {{staticPage.title}}
+           </span>
+         </a>
+       </li>
+       {{/each}}
+     </div>
+   </div>
+   {{/if}}
+</template> 
 <template name="userAccountsDropdown">
   <!--user account shortcut icons -->
   {{#each reactionApps provides="userAccountDropdown" enabled=true}}

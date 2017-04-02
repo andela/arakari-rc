@@ -3,6 +3,7 @@ import { Tags } from "/lib/collections";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { StaticPages } from "/lib/collections";
 
 Template.loginDropdown.events({
 
@@ -81,4 +82,13 @@ Template.walletButton.events({
     event.preventDefault();
     FlowRouter.go("/wallet");
   }
+});
+Template.pages.onCreated(() => {
+   Meteor.subscribe("staticPages");
+ });
+ 
+ Template.pages.helpers({
+   staticPages() {
+     return StaticPages.find({shopId: Reaction.shopId}).fetch();
+   }
 });
