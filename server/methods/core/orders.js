@@ -241,8 +241,6 @@ Meteor.methods({
       orderId: order._id
     };
 
-    console.log(order, notifications, notifications.type);
-
     check(notifications, Schemas.Notifications);
     Notifications.insert(notifications);
 
