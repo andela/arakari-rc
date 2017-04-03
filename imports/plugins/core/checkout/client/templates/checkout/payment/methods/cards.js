@@ -6,9 +6,6 @@ import Alert from "sweetalert2";
 const openClassName = "in";
 
 Template.corePaymentMethods.onCreated(function () {
-  // Set the default paymentMethod
-  // Note: we do this once, so if the admin decides to change the default payment method
-  // while a user is trying to checkout, they wont get a jarring experience.
   const shop = Shops.findOne();
 
   this.state = new ReactiveDict();
