@@ -24,6 +24,8 @@ Template.ordersListSummary.helpers({
   numericInputProps(value) {
     const { currencyFormat } = Template.instance().data;
 
+    Session.set("total", value);
+
     return {
       component: NumericInput,
       value,
@@ -46,17 +48,12 @@ Template.ordersListSummary.helpers({
  * ordersListSummary events
  */
 Template.ordersListSummary.events({
-  /**
-  * Submit form
-  * @param  {Event} event - Event object
- * @param  {Template} instance - Blaze Template
-* @return {void}
-*/
   "click button[name=cancel]"(event, instance) {
     event.stopPropagation();
 
     const state = instance.state;
     const order = state.get("order");
+
 
     swal({
       title: "Are you sure?",
@@ -68,6 +65,8 @@ Template.ordersListSummary.events({
     })
     .then(() => {
       Meteor.call("orders/cancelOrder", order, (error) => {
+        const value = Session.get("total");
+        Meteor.call("wallets/updateWallet", value);
         if (error) {
           swal("Order cancellation unsuccesful.", "success");
         }
