@@ -98,5 +98,13 @@ Meteor.methods({
         balance: amount
       }
     });
+  },
+
+  "wallets/getBalance": () => {
+    myWallet = Wallets.find({
+      userId: Meteor.userId()
+    }).fetch();
+
+    return myWallet[0].balance;
   }
 });

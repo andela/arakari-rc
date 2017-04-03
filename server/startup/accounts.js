@@ -108,17 +108,17 @@ export default function () {
       } else {
         if (user.profile === undefined) {
           user.profile = {};
-          user.profile.account = 'Admin'
+          user.profile.account = "Admin";
         } else {
           Meteor.call('user/getCurrentUser', (err, res) => {
-          if (err) return alert(err)
-          const current_user = res;
-          user.profile.account = current_user.profile.account
-          return user.profile.account
-        });
+            if (err) return alert(err);
+            const current_user = res;
+            user.profile.account = current_user.profile.account;
+            return user.profile.account;
+          });
         }
         // checks if user is a vendor and assigns the correct roles to user
-        if (user.profile.account === 'vendor') {
+        if (user.profile.account === "vendor") {
           roles[shopId] = shop.vendorRoles || vendorRoles;
         } else {
           roles[shopId] = shop.defaultRoles || defaultRoles;
