@@ -9,7 +9,7 @@ import { Meteor } from "meteor/meteor";
 import bcrypt from "bcrypt";
 import SHA256 from "js-sha256";
 
-const secret = process.env.SECRET || "wearethepirateswhodontdoanything";
+const secret = process.env.SECRET;
 
 const app = express();
 const PORT = 9090;
