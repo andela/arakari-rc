@@ -2,24 +2,6 @@
   <div class="flex flex-column flex-align-center flex-2x container-lg">
 
     <div class="flex-item">
-      <div class="panel panel-default">
-        <div class="panel-info panel-heading">
-          <h3 class="panel-title">Set Wallet Pin</h3>
-        </div>
-
-        <div class="panel-content">
-          <form id="wallet-pin">
-            <div class="row form-group col-md-6 col-md-offset-3">
-              <input id="old-pin" class="form-control" type="password" placeholder="Default pin is zero" maxlength="4">
-              <input id="new-pin" class="form-control" type="password" placeholder="Input new Pin" maxlength="4">
-            </div>
-            <button type="submit" class="row col-md-2 col-md-offset-5 btn btn-success">Change Pin</button>
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <div class="flex-item">
       <div class="panel panel-success panel-lg">
         <div class="panel-heading">
           <h3 class="panel-title">Your Balance</h3>
@@ -43,29 +25,6 @@
               <input id="depositAmount" class="form-control" type="number" placeholder="Amount">
             </div>
             <button type="submit" class="row col-md-2 col-md-offset-5 btn btn-success">Deposit</button>
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <div class="flex-item">
-      <div class="panel panel-default">
-        <div class="panel-warning panel-heading">
-          <h3 class="panel-title">Transfer</h3>
-        </div>
-
-        <div class="panel-content">
-          <form id="transfer">
-            <div class="col-xs-6" style="margin-bottom: 5px;">
-              <input id="transferAmount" class="form-control" type="number" name="amount" placeholder="Amount">
-            </div>
-            <div class="col-xs-6">
-              <input id="wallets-transfer" class="form-control" type="password" name="pin" placeholder="Wallet Pin" maxlength="4">
-            </div>
-            <div class="col-xs-12">
-              <input id="recipient" class="form-control" type="text" name="email" placeholder="Beneficiary Email">
-            </div>
-            <button type="submit" class="btn btn-success col-xs-2 col-md-offset-5" style="margin-top:15px">Transfer</button>
           </form>
         </div>
       </div>
