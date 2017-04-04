@@ -73,12 +73,27 @@ function isSoldOut(variant) {
 }
 
 class VariantListContainer extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isDigital: true
+    };
+  }
   componentWillReceiveProps() {
     this.setState({});
   }
 
   get variants() {
     return (this.state && this.state.variants) || this.props.variants;
+  }
+
+  get products() {
+    return this.props.product;
+  }
+
+  get isDigital() {
+    return this.props.isDigital;
   }
 
   handleVariantClick = (event, variant, ancestors = -1) => {
@@ -162,7 +177,9 @@ class VariantListContainer extends Component {
           onMoveVariant={this.handleMoveVariant}
           onVariantClick={this.handleVariantClick}
           onVariantVisibiltyToggle={this.handleVariantVisibilityToggle}
+          isDigital={this.isDigital}
           {...this.props}
+          products={this.products}
           variants={this.variants}
         />
       </DragDropProvider>
@@ -187,7 +204,7 @@ function composer(props, onData) {
   }
 
   let editable;
-
+  const products = props.product;
   if (Reaction.Router.getQueryParam("as") === "customer") {
     editable = false;
   } else {
@@ -198,6 +215,7 @@ function composer(props, onData) {
     variants: getTopVariants(),
     variantIsSelected,
     variantIsInActionView,
+    products,
     childVariants,
     childVariantMedia,
     displayPrice: ReactionProduct.getVariantPriceRange,
@@ -207,6 +225,7 @@ function composer(props, onData) {
 }
 
 VariantListContainer.propTypes = {
+  isDigital: PropTypes.any,
   variants: PropTypes.arrayOf(PropTypes.object)
 };
 
