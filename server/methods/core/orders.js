@@ -229,6 +229,22 @@ Meteor.methods({
    */
   "orders/cancelOrder"(order) {
     check(order, Object);
+
+    this.unblock();
+
+    const notifications = {
+      userId: order.userId,
+      name: "Order Canceled",
+      type: "canceled",
+      message: "❌ Your order has been cancelled!",
+      read: false,
+      orderId: order._id
+    };
+
+    check(notifications, Schemas.Notifications);
+    Notifications.insert(notifications);
+
+
     // Update Order
     return Orders.update(order._id, {
       $set: {
