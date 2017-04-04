@@ -2,7 +2,7 @@
 <template name="reactionAnalysis" >
 <p>
 <button class="btn btn-success"  data-toggle="modal" data-target="#lineG"><i class="fa fa-line-chart"></i> Line Graph</button>
-<canvas id="myChart" width="50px" height="50"></canvas>
+<canvas id="myChart" style="width:5px,height:5px"></canvas>
 </p>
 <p style="width:100px ,height:300px">
 
@@ -13,7 +13,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h3><i class="fa fa-bar-chart"></i> Bar Data Graph Representation </h3>
+          <h3><i class="fa fa-bar-chart"></i> Bar Data Graph Representation  </h3>
         </div>
         <div class="modal-body" style="width:300px;height: 300px">
           <canvas id="barGraph" width="50px" height="50px"></canvas>
@@ -37,7 +37,7 @@
           <h3><i class="fa fa-line-chart"></i> Line Graph Representation </h3>
         </div>
         <div class="modal-body" style="width:100%">
-          <canvas id="lineGraph" width="50px" height="50px"></canvas>
+          <canvas id="lineGraph" style="width:5px,height:5px"></canvas>
         </div>
         <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-remove"></i> Close</button>
@@ -110,8 +110,6 @@ const getOrders = () => {
         orderMonth = month[(new Date(order.createdAt)).getMonth()];
         monthOrders[orderMonth] += 1;  
     }); 
-
-    const polar = document.getElementById("myChart");
 
     const bar = document.getElementById("myChart");
     const barGraph = new Chart(bar, {
