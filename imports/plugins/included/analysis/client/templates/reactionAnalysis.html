@@ -1,6 +1,6 @@
 
 <template name="reactionAnalysis" >
-<p><button class="btn btn-success"  data-toggle="modal" data-target="#barG"><i class="fa fa-bar-chart"></i> Bar Graph</button>
+<p>
 <button class="btn btn-success"  data-toggle="modal" data-target="#lineG"><i class="fa fa-line-chart"></i> Line Graph</button>
 </p>
 <p style="width:500px;height: 500px">
@@ -12,7 +12,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h3><i class="fa fa-bar-chart"></i> Bar Graph Representation </h3>
+          <h3><i class="fa fa-bar-chart"></i> Bar Data Graph Representation </h3>
         </div>
         <div class="modal-body" style="width:300px;height: 300px">
           <canvas id="barGraph" width="50px" height="50px"></canvas>
@@ -62,8 +62,9 @@
     </div>
   </div>
 </p>
+
 <script type="text/javascript">
-const getOrder = () => {
+const getOrders = () => {
   Meteor.call("orders/getOrder", (err, res) => {
     Session.set("orders", res);
   });
@@ -73,7 +74,6 @@ const getOrder = () => {
         ++count;
     }
 
-  //var Xmas95 = new Date(Session.get("orders")[0].createdAt);
   var month = new Array();
     month[0] = "January";
     month[1] = "February";
@@ -88,68 +88,36 @@ const getOrder = () => {
     month[10] = "November";
     month[11] = "December";
 
-    var d = new Date(Session.get("orders")[0].createdAt);
-    var n = month[d.getMonth()];
-var polar = document.getElementById("myChart");
+    monthOrders = {
+    January: 0,
+    February: 0,
+    March: 0,
+    April: 0,
+    May: 0,
+    June: 0,
+    July: 0,
+    August: 0,
+    September: 0,
+    October: 0,
+    November: 0,
+    December: 0
+    };
 
-var myChart = new Chart(polar, {
-    type: 'polarArea',
-    data: {
-        labels: [n],
-        datasets: [{
-            label: 'No. of orders for :' + n,
-            data: [count],
-            backgroundColor: [
-                'rgba(236, 127, 0, 0.9)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(88, 44, 60, 0.9)',
-                'rgba(6, 44, 60, 0.9)',
-                'rgba(6, 26, 0, 0.9)',
-                'rgba(6, 26, 142, 0.9)',
-                'rgba(3, 139, 142, 0.9)',
-                'rgba(3, 255, 255, 0.9)'
+    Session.get("orders").forEach( order => {
+        orderMonth = month[(new Date(order.createdAt)).getMonth()];
+        monthOrders[orderMonth] += 1;  
+    }); 
 
-            ],
-            borderColor: [
-                'rgba(236, 127, 0, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-                'rgba(88, 44, 60, 1)',
-                'rgba(6, 44, 60, 1)',
-                'rgba(6, 26, 0, 1)',
-                'rgba(6, 26, 142, 1)',
-                'rgba(3, 139, 142, 1)',
-                'rgba(3, 255, 255, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        }
-    }
-});
+    const polar = document.getElementById("myChart");
 
-const bar = document.getElementById("barGraph");
-const barGraph = new Chart(bar, {
+    const bar = document.getElementById("myChart");
+    const barGraph = new Chart(bar, {
     type: 'bar',
     data: {
-        labels: [n],
+        labels: Object.keys(monthOrders),
         datasets: [{
-            label: 'No. of orders for :' + n,
-            data: [count],
+            label: 'No. of orders',
+            data: Object.values(monthOrders),
             backgroundColor: [
                 'rgba(236, 127, 0, 0.9)',
                 'rgba(54, 162, 235, 0.2)',
@@ -197,10 +165,10 @@ const line = document.getElementById("lineGraph");
 const lineGraph = new Chart(line, {
     type: 'line',
     data: {
-        labels: [n],
+        labels: Object.keys(monthOrders),
         datasets: [{
-            label: 'No. of orders for :' + n,
-            data: [count],
+            label: 'No. of orders',
+            data: Object.values(monthOrders),
             backgroundColor: [
                 'rgba(236, 127, 0, 0.9)',
                 'rgba(54, 162, 235, 0.2)',
@@ -246,6 +214,6 @@ const lineGraph = new Chart(line, {
 
   return Session.get("orders");
 };
-getOrder();
+getOrders();
 </script>
 </template>
