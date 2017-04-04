@@ -67,6 +67,22 @@
     {{else}}
     <div class="panel panel-default">
     <button name="cancel" class="btn btn-sm btn-danger" type="submit" data-event-action="cancelOrder" data-i18n="order.cancelOrder">Cancel Order</button></div>
+    <div class="input-group">
+      <span class="input-group-addon custom__addon blue__addon">
+        <span class="glyphicon glyphicon-cog"></span> Reason for Cancelling Order
+        </span>
+        <select class="form-control custom__select">
+          <option value="global">Do not Have Need for Product</option>
+          <option value="week">Better deal on the same product</option>
+          <option value="month">Change of Mind</option>
+          <option value="year">Other</option>
+        </select>
+  </div>
+  <style>
+  .blue__addon {
+    background-color: #337ab7;
+    }
+  </style>
     {{/if}}
   </div>
 </template>
