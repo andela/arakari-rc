@@ -1,4 +1,4 @@
-import * as wallet from "./wallet2.html";
+import * as wallet from "./wallet.html";
 import { Reaction } from "/client/api";
 import { Template } from "meteor/templating";
 import { Cart, Shops, Accounts, Packages, Wallets } from "/lib/collections";
